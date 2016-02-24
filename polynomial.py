@@ -39,6 +39,14 @@ class Polynomial(object):
                 result += " + {0}x^{1}".format(c, i)
         return result
 
+    def __eq__(self, other):
+        if not isinstance(other, Polynomial):
+            return False
+        elif self.degree != other.degree:
+            return False
+        else:
+            return all(self.coeffs[i] == other.coeffs[i] for i in range(self.degree))
+
 
 def main():
     p1 = Polynomial([1])        # p = 1
@@ -47,6 +55,8 @@ def main():
     assert(p2.degree == 2)
     assert(p2.coeffs == [2, 3, 4])
     assert(p2.__str__() == "2 + 3x^1 + 4x^2")
+    assert(p2 != p1)
+    assert(p2 == Polynomial([2, 3, 4]))
 
 if __name__ == "__main__":
     main()
