@@ -71,6 +71,13 @@ class Polynomial(object):
         else:
             self.coeffs[key] = value
 
+    def __add__(self, other):
+        if not isinstance(other, Polynomial):
+            # For now, cannot handle addition to anything other than polynomials
+            raise TypeError("Can only add Polynomial to Polynomial")
+        else:
+            return Polynomial([self[i] + other[i] for i in range(max(self.degree, other.degree)+1)])
+
 
 def main():
     p1 = Polynomial([1])        # p = 1
@@ -88,6 +95,8 @@ def main():
     assert(p3[1] == 2)
     p3[10] = 10
     assert(p3[10] == 10 and p3.degree == 10)
+    assert(p1 + p1 == Polynomial([2]))
+    assert(p1 + p2 == Polynomial([3, 3, 4]))
 
 if __name__ == "__main__":
     main()
