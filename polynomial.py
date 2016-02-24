@@ -24,7 +24,10 @@ class Polynomial(object):
         elif len(c) == 0:
             raise ValueError("arg length must be > 0")
         else:
-            self._coeffs = c
+            for i, d in enumerate(list(reversed(c))):
+                if d != 0:
+                    self._coeffs = c[:len(c) - i]
+                    break
 
     def __str__(self):
         result = ""
@@ -51,12 +54,13 @@ class Polynomial(object):
 def main():
     p1 = Polynomial([1])        # p = 1
     p2 = Polynomial([2, 3, 4])  # p = 2 + 3x + 4x^2
+    p3 = Polynomial([2, 3, 4, 0, 0])
     assert(p1.degree == 0)
-    assert(p2.degree == 2)
-    assert(p2.coeffs == [2, 3, 4])
+    assert(p2.degree == p3.degree == 2)
+    assert(p2.coeffs == p3.coeffs == [2, 3, 4])
     assert(p2.__str__() == "2 + 3x^1 + 4x^2")
     assert(p2 != p1)
-    assert(p2 == Polynomial([2, 3, 4]))
+    assert(p2 == p3 == Polynomial([2, 3, 4]))
 
 if __name__ == "__main__":
     main()
