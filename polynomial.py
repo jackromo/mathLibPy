@@ -48,7 +48,28 @@ class Polynomial(object):
         elif self.degree != other.degree:
             return False
         else:
-            return all(self.coeffs[i] == other.coeffs[i] for i in range(self.degree))
+            return all(self[i] == other[i] for i in range(self.degree))
+
+    def __getitem__(self, item):
+        if not isinstance(item, int):
+            raise TypeError("Tried to index with a non-integer")
+        elif item < 0:
+            raise ValueError("Tried to index term of exponent < 0")
+        elif item > self.degree:
+            return 0    # Polynomial has infinite terms, but ones > degree have coefficient 0
+        else:
+            return self.coeffs[item]
+
+    def __setitem__(self, key, value):
+        if not isinstance(key, int):
+            raise TypeError("Tried to index with a non-integer")
+        elif key < 0:
+            raise ValueError("Tried to index term of exponent < 0")
+        elif key > self.degree:
+            self.coeffs.extend([0 for _ in range(key - self.degree - 1)] + [value])
+            # Degree automatically updated by coeffs setter
+        else:
+            self.coeffs[key] = value
 
 
 def main():
@@ -61,6 +82,12 @@ def main():
     assert(p2.__str__() == "2 + 3x^1 + 4x^2")
     assert(p2 != p1)
     assert(p2 == p3 == Polynomial([2, 3, 4]))
+    assert(p1[0] == 1)
+    assert(p2[10] == 0)
+    p3[1] = 2
+    assert(p3[1] == 2)
+    p3[10] = 10
+    assert(p3[10] == 10 and p3.degree == 10)
 
 if __name__ == "__main__":
     main()
