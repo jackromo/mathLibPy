@@ -199,6 +199,7 @@ class Matrix(object):
 
 
 def main():
+    # Run all tests
     m1 = Matrix(2, 2)
     m2 = Matrix(2, 2, [[1, 1],
                        [2, 1]])
