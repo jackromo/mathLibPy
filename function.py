@@ -32,7 +32,7 @@ class Function(object, abc.ABCMeta):
     def __div__(self, other):
         """Divide self with another function"""
 
-    def compose(self, other):
+    def _compose(self, other):
         """
         Compose self with another function.
         Cannot be done differently by another function, so implemented here.
@@ -58,7 +58,7 @@ class FunctionBinaryTreeNode(Function, abc.ABCMeta):
         if isinstance(x, numbers.Number):
             return self._evaluate(x)
         elif isinstance(x, Function):
-            return self.compose(x)
+            return self._compose(x)
         else:
             raise TypeError("Can only be called on Function or Number")
 
@@ -66,7 +66,7 @@ class FunctionBinaryTreeNode(Function, abc.ABCMeta):
     def _evaluate(self, x):
         """
         Take a number x, and return f(x).
-        Input x is guaranteed to be a Number. This method is private.
+        Input x is guaranteed to be a Number.
         """
 
     def __add__(self, other):
@@ -95,7 +95,9 @@ class FunctionAddNode(FunctionBinaryTreeNode):
     Node of function parse tree for addition of two functions.
     Is a function itself, and can be evaluated.
     """
-    pass
+
+    def _evaluate(self, x):
+        return self.f1(x) + self.f2(x)
 
 
 class FunctionSubNode(FunctionBinaryTreeNode):
@@ -103,7 +105,9 @@ class FunctionSubNode(FunctionBinaryTreeNode):
     Node of function parse tree for subtraction of two functions.
     Is a function itself, and can be evaluated.
     """
-    pass
+
+    def _evaluate(self, x):
+        return self.f1(x) - self.f2(x)
 
 
 class FunctionMulNode(FunctionBinaryTreeNode):
@@ -111,7 +115,9 @@ class FunctionMulNode(FunctionBinaryTreeNode):
     Node of function parse tree for multiplication of two functions.
     Is a function itself, and can be evaluated.
     """
-    pass
+
+    def _evaluate(self, x):
+        return self.f1(x) * self.f2(x)
 
 
 class FunctionDivNode(FunctionBinaryTreeNode):
@@ -119,7 +125,12 @@ class FunctionDivNode(FunctionBinaryTreeNode):
     Node of function parse tree for division of two functions.
     Is a function itself, and can be evaluated.
     """
-    pass
+
+    def _evaluate(self, x):
+        if self.f2(x) == 0:
+            raise Exception("Division by Zero detected")
+        else:
+            return self.f1(x) / self.f2(x)
 
 
 class FunctionCompNode(FunctionBinaryTreeNode):
@@ -127,4 +138,6 @@ class FunctionCompNode(FunctionBinaryTreeNode):
     Node of function parse tree for composition of two functions.
     Is a function itself, and can be evaluated.
     """
-    pass
+
+    def _evaluate(self, x):
+        return self.f1(self.f2(x))
