@@ -1,7 +1,7 @@
-import numbers
+import function
 
 
-class Polynomial(object):
+class Polynomial(function.Function):
 
     def __init__(self, coeffs):
         """
@@ -29,6 +29,9 @@ class Polynomial(object):
                 if d != 0:
                     self._coeffs = c[:len(c) - i]
                     break
+
+    def _evaluate(self, x):
+        return sum(self[i]*(x**i) for i in range(self.degree+1))
 
     def __str__(self):
         result = ""
@@ -72,18 +75,6 @@ class Polynomial(object):
         else:
             self.coeffs[key] = value
 
-    def __add__(self, other):
-        if not isinstance(other, Polynomial):
-            # For now, cannot handle addition to anything other than polynomials
-            raise TypeError("Can only add Polynomial to Polynomial")
-        else:
-            return Polynomial([self[i] + other[i] for i in range(max(self.degree, other.degree)+1)])
-
-    def __call__(self, x):
-        if not (isinstance(x, numbers.Number)):
-            raise TypeError("Must supply number to Polynomial")
-        return sum(self[i]*(x**i) for i in range(self.degree+1))
-
 
 def main():
     # Run all tests
@@ -102,10 +93,15 @@ def main():
     assert(p3[1] == 2)
     p3[10] = 10
     assert(p3[10] == 10 and p3.degree == 10)
-    assert(p1 + p1 == Polynomial([2]))
-    assert(p1 + p2 == Polynomial([3, 3, 4]))
     assert(p1(0) == 1)
     assert(p2(1) == 9)
+    assert(isinstance(p1 + p1, function.FunctionAddNode))
+    assert((p1+p2)(1) == 10)
+    assert((p1-p2)(1) == -8)
+    assert((p1*p2)(1) == 9)
+    assert((p1/p2)(1) == 1 / 9)
+    assert(p1(p2)(1) == 1)
+    assert(p2(p1)(2) == 9)
 
 if __name__ == "__main__":
     main()
