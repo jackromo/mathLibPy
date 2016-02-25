@@ -1,3 +1,4 @@
+import numbers
 
 
 class Polynomial(object):
@@ -78,8 +79,14 @@ class Polynomial(object):
         else:
             return Polynomial([self[i] + other[i] for i in range(max(self.degree, other.degree)+1)])
 
+    def __call__(self, x):
+        if not (isinstance(x, numbers.Number)):
+            raise TypeError("Must supply number to Polynomial")
+        return sum(self[i]*(x**i) for i in range(self.degree+1))
+
 
 def main():
+    # Run all tests
     p1 = Polynomial([1])        # p = 1
     p2 = Polynomial([2, 3, 4])  # p = 2 + 3x + 4x^2
     p3 = Polynomial([2, 3, 4, 0, 0])
@@ -97,6 +104,8 @@ def main():
     assert(p3[10] == 10 and p3.degree == 10)
     assert(p1 + p1 == Polynomial([2]))
     assert(p1 + p2 == Polynomial([3, 3, 4]))
+    assert(p1(0) == 1)
+    assert(p2(1) == 9)
 
 if __name__ == "__main__":
     main()
