@@ -1,5 +1,4 @@
 import function
-import copy
 
 
 class Polynomial(function.Function):

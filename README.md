@@ -12,6 +12,7 @@ Implemented features:
     * Exponential function
     * Function combination and composition (addition, division, etc.)
     * Differentiation
+* Arithmetic and Geometric sequences
 
 
 Future features:
@@ -25,4 +26,6 @@ Future features:
     * Integration (symbolic and definite)
     * Find max and min values
 * Sequences and series
+    * Generic sequence, takes any Function
+    * Infinite sums, tests for convergence and divergence
 * Geometric shapes
