@@ -1,4 +1,5 @@
 import function
+import copy
 
 
 class Polynomial(function.Function):
@@ -75,6 +76,12 @@ class Polynomial(function.Function):
         else:
             self.coeffs[key] = value
 
+    def get_derivative(self):
+        if self.degree == 0:
+            return function.Constant(0)
+        else:
+            return Polynomial([self.coeffs[i]*i for i in range(1, self.degree+1)])
+
 
 def main():
     # Run all tests
@@ -102,6 +109,8 @@ def main():
     assert((p1/p2)(1) == 1 / 9)
     assert(p1(p2)(1) == 1)
     assert(p2(p1)(2) == 9)
+    assert(p2.get_derivative()(1) == 11)
+    assert(p1.get_derivative()(1) == 0)
 
 if __name__ == "__main__":
     main()

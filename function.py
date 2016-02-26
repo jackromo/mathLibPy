@@ -50,6 +50,12 @@ class Function(object):
             raise TypeError("Other must be of type Function")
         return FunctionDivNode(self, other)
 
+    @abc.abstractmethod
+    def get_derivative(self):
+        """
+        Return own derivative as a function.
+        """
+
 
 class FunctionBinaryTreeNode(Function):
     """
@@ -75,6 +81,9 @@ class FunctionAddNode(FunctionBinaryTreeNode):
     def _evaluate(self, x):
         return self.f1(x) + self.f2(x)
 
+    def get_derivative(self):
+        return self.f1.get_derivative() + self.f2.get_derivative()
+
 
 class FunctionSubNode(FunctionBinaryTreeNode):
     """
@@ -85,6 +94,9 @@ class FunctionSubNode(FunctionBinaryTreeNode):
     def _evaluate(self, x):
         return self.f1(x) - self.f2(x)
 
+    def get_derivative(self):
+        return self.f1.get_derivative() - self.f2.get_derivative()
+
 
 class FunctionMulNode(FunctionBinaryTreeNode):
     """
@@ -94,6 +106,14 @@ class FunctionMulNode(FunctionBinaryTreeNode):
 
     def _evaluate(self, x):
         return self.f1(x) * self.f2(x)
+
+    def get_derivative(self):
+        # Use product rule
+        u = self.f1
+        v = self.f2
+        du = self.f1.get_derivative()
+        dv = self.f2.get_derivative()
+        return (du * v) + (u * dv)
 
 
 class FunctionDivNode(FunctionBinaryTreeNode):
@@ -108,6 +128,14 @@ class FunctionDivNode(FunctionBinaryTreeNode):
         else:
             return self.f1(x) / self.f2(x)
 
+    def get_derivative(self):
+        # Use quotient rule
+        u = self.f1
+        v = self.f2
+        du = self.f1.get_derivative()
+        dv = self.f2.get_derivative()
+        return ((du * v) - (u * dv)) / (v * v)
+
 
 class FunctionCompNode(FunctionBinaryTreeNode):
     """
@@ -117,3 +145,22 @@ class FunctionCompNode(FunctionBinaryTreeNode):
 
     def _evaluate(self, x):
         return self.f1(self.f2(x))
+
+    def get_derivative(self):
+        return self.f2.get_derivative() * FunctionCompNode(self.f1.get_derivative(), self.f2)
+
+
+class Constant(Function):
+    """
+    A constant value, ie. f(x) = c.
+    Used for containing constant values in function tree.
+    """
+
+    def __init__(self, val):
+        self.val = val
+
+    def _evaluate(self, x):
+        return self.val
+
+    def get_derivative(self):
+        return Constant(0)
