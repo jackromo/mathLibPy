@@ -1,4 +1,5 @@
 import abc
+import function
 
 
 class Sequence(object):
@@ -8,10 +9,19 @@ class Sequence(object):
 
     __metaclass__ = abc.ABCMeta
 
-    @abc.abstractmethod
     def __call__(self, n):
+        if not isinstance(n, int):
+            raise TypeError("Can only be called on integers")
+        elif not 0 <= n:
+            raise ValueError("Argument must be > 0")
+        else:
+            return self._term_at(n)
+
+    @abc.abstractmethod
+    def _term_at(self, n):
         """
         Given a value n, returns the nth item in the sequence.
+        n is guaranteed to be an integer > 0.
         """
 
     def sum_from_to(self, i, n):
@@ -19,6 +29,20 @@ class Sequence(object):
         Given a value n, returns the sum of all items from i to n inclusive.
         """
         return sum(self(j) for j in range(i, n+1))
+
+
+class FunctionSequence(Sequence):
+    """
+    Sequence where each item is defined by a Function.
+    """
+
+    def __init__(self, f):
+        if not isinstance(f, function.Function):
+            raise TypeError("Must supply Function to FunctionSequence")
+        self.func = f
+
+    def _term_at(self, n):
+        return self.func(n)
 
 
 class ArithmeticSequence(Sequence):
@@ -34,13 +58,8 @@ class ArithmeticSequence(Sequence):
         self.initial = initial
         self.const = c
 
-    def __call__(self, n):
-        if not isinstance(n, int):
-            raise TypeError("Can only be called on integers")
-        elif not 0 <= n:
-            raise ValueError("Argument must be > 0")
-        else:
-            return self.initial + (self.const * n)
+    def _term_at(self, n):
+        return self.initial + (self.const * n)
 
 
 class GeometricSequence(Sequence):
@@ -56,13 +75,8 @@ class GeometricSequence(Sequence):
         self.initial = initial
         self.const = r
 
-    def __call__(self, n):
-        if not isinstance(n, int):
-            raise TypeError("Can only be called on integers")
-        elif not 0 <= n:
-            raise ValueError("Argument must be > 0")
-        else:
-            return self.initial * (self.const ** n)
+    def _term_at(self, n):
+        return self.initial * (self.const ** n)
 
 
 def main():
