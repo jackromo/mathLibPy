@@ -139,6 +139,22 @@ class Matrix(object):
         result = Matrix(self.rows, self.rows, [[1 if r == c else 0 for c in range(self.rows)]
                                                for r in range(self.rows)])
         temp_self = copy.deepcopy(self)
+        # Swap rows to make main diagonal nonzero
+        # We assume this can be done without fail, as otherwise the matrix would have a determinant of 0
+        for row in range(temp_self.rows):
+            if temp_self.body[row][row] == 0:
+                # Check all lower rows, swap with one below
+                for r in range(row+1, temp_self.rows):
+                    if temp_self.body[r][row] != 0:
+                        # Found a swappable row, swap values
+                        temp_row = temp_self.body[r]
+                        temp_self.body[r] = temp_self.body[row]
+                        temp_self.body[row] = temp_row
+                        # Do same operation on result
+                        temp_row_result = result.body[r]
+                        result.body[r] = result.body[row]
+                        result.body[row] = temp_row_result
+
         for row in range(self.rows):
             # Generate each row op as a matrix, multiply iteratively with identity
             row_op = Matrix(self.rows, self.rows)   # Current row operation
@@ -229,6 +245,9 @@ def main():
     assert(m3.get_inverse() == Matrix(3, 3, [[-5, 0, -2],
                                              [-4, 1, -1],
                                              [1.5, 0, 0.5]]))
+    m4 = Matrix(2, 2, [[0, 1],
+                       [1, 0]])
+    assert(m4.get_inverse() == m4)
 
 if __name__ == "__main__":
     main()

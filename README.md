@@ -5,27 +5,34 @@ Implemented features:
 * Matrices
     * Arithmetic on matrices
     * Determinants and cofactors
-    * Inverses
+    * Inverses (can handle zeros on main diagonal)
 * Functions
     * Polynomials
     * Trigonometric functions
     * Exponential function
     * Function combination and composition (addition, division, etc.)
     * Differentiation
-* Arithmetic and Geometric sequences
+* Sequences
+    * Arithmetic and Geometric sequences
+    * Generic sequence, takes any Function
 
 
 Future features:
 * Matrices
-    * Inverses for matrices with rows out of order
     * Echelon and reduced echelon form
     * Eigenvectors and eigenvalues
     * Diagonalization
 * Functions
     * Find roots and fixed points
+    * Limits
     * Integration (symbolic and definite)
     * Find max and min values
 * Sequences and series
-    * Generic sequence, takes any Function
     * Infinite sums, tests for convergence and divergence
 * Geometric shapes
+* Random variables
+    * Discrete and continuous
+    * Expected value, variance, median and mode
+    * Arithmetic on variables
+* Distributions
+    * Binomial, Gaussian, Chi squared, etc.
