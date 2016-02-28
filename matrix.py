@@ -134,27 +134,40 @@ class Matrix(object):
     def get_echelon_form(self):
         # Uses simplified version of Gauss-Jordan algorithm.
         result = copy.deepcopy(self)
-        pivot_x = 0
+        pivot_col = 0
         # Iterate through each column
-        for pivot_y in range(self.rows):
-            while result.body[pivot_y][pivot_x] == 0:
+        for pivot_row in range(self.rows):
+            while result.body[pivot_row][pivot_col] == 0:
                 # Check all lower rows, swap with one below
                 has_swapped = False
-                for r in range(pivot_y+1, result.rows):
-                    if result.body[r][pivot_x] != 0:
+                for r in range(pivot_row+1, result.rows):
+                    if result.body[r][pivot_col] != 0:
                         # Found a swappable row, swap values
                         temp_row = result.body[r]
-                        result.body[r] = result.body[pivot_y]
-                        result.body[pivot_y] = temp_row
+                        result.body[r] = result.body[pivot_row]
+                        result.body[pivot_row] = temp_row
                         has_swapped = True
                 if not has_swapped:
-                    pivot_x += 1    # Skip to next column
+                    pivot_col += 1    # Skip to next column
             # Subtract multiples of current row from all lower rows to make rest of column zero
-            for row in range(pivot_y+1, self.rows):
-                if row != pivot_y:
-                    factor = result.body[row][pivot_x] / result.body[pivot_y][pivot_x]
-                    result.body[row] = [result.body[row][c] - (factor*result.body[pivot_y][c])
-                                        for c in range(result.cols)]
+            for row in range(pivot_row+1, self.rows):
+                factor = result.body[row][pivot_col] / result.body[pivot_row][pivot_col]
+                result.body[row] = [result.body[row][c] - (factor*result.body[pivot_row][c])
+                                    for c in range(result.cols)]
+        return result
+
+    def get_reduced_echelon_form(self):
+        result = self.get_echelon_form()
+        # Go up rows in reverse
+        for pivot_row in range(self.rows-1, -1, -1):
+            # Pivot is first nonzero element in row
+            pivot = next(x for x in result.body[pivot_row] if x != 0)
+            pivot_col = result.body[pivot_row].index(pivot)
+            # Subtract multiples of current row from all above rows to make rest of column zero
+            for row in range(pivot_row-1, -1, -1):
+                factor = result.body[row][pivot_col] / pivot
+                result.body[row] = [result.body[row][c] - (factor*result.body[pivot_row][c])
+                                    for c in range(result.cols)]
         return result
 
     def _get_echelon_ops_matrix(self):
@@ -277,6 +290,9 @@ def main():
     assert(m3.get_echelon_form() == Matrix(3, 3, [[1, 0, 4],
                                                   [0, 1, 2],
                                                   [0, 0, 2]]))
+    assert(m3.get_reduced_echelon_form() == Matrix(3, 3, [[1, 0, 0],
+                                                          [0, 1, 0],
+                                                          [0, 0, 2]]))
 
 if __name__ == "__main__":
     main()
