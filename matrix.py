@@ -170,6 +170,13 @@ class Matrix(object):
                                     for c in range(result.cols)]
         return result
 
+    def get_row_reduced_echelon_form(self):
+        result = self.get_reduced_echelon_form()
+        for row in range(result.rows):
+            pivot = next(x for x in result.body[row] if x != 0)
+            result.body[row] = [i / pivot for i in result.body[row]]
+        return result
+
     def _get_echelon_ops_matrix(self):
         """
         Makes matrix B s.t. B*self = Echelon form of self.
@@ -293,6 +300,9 @@ def main():
     assert(m3.get_reduced_echelon_form() == Matrix(3, 3, [[1, 0, 0],
                                                           [0, 1, 0],
                                                           [0, 0, 2]]))
+    assert(m3.get_row_reduced_echelon_form() == Matrix(3, 3, [[1, 0, 0],
+                                                              [0, 1, 0],
+                                                              [0, 0, 1]]))
 
 if __name__ == "__main__":
     main()

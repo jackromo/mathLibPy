@@ -6,7 +6,7 @@ Implemented features:
     * Arithmetic on matrices
     * Determinants and cofactors
     * Inverses (can handle zeros on main diagonal)
-    * Echelon and reduced Echelon form
+    * Echelon and (row) reduced Echelon form
 * Functions
     * Polynomials
     * Trigonometric functions
@@ -20,7 +20,6 @@ Implemented features:
 
 Future features:
 * Matrices
-    * Row reduced Echelon form
     * Eigenvectors and eigenvalues
     * Diagonalization
 * Functions
