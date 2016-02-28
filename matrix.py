@@ -177,87 +177,22 @@ class Matrix(object):
             result.body[row] = [i / pivot for i in result.body[row]]
         return result
 
-    def _get_echelon_ops_matrix(self):
-        """
-        Makes matrix B s.t. B*self = Echelon form of self.
-        Only works on square matrix with full rank.
-        """
-        result = Matrix(self.rows, self.rows, [[1 if r == c else 0 for c in range(self.rows)]
-                                               for r in range(self.rows)])
-        temp_self = copy.deepcopy(self)
-        # Swap rows to make main diagonal nonzero
-        # We assume this can be done without fail, as otherwise the matrix would have a determinant of 0
-        for row in range(temp_self.rows):
-            if temp_self.body[row][row] == 0:
-                # Check all lower rows, swap with one below
-                for r in range(row+1, temp_self.rows):
-                    if temp_self.body[r][row] != 0:
-                        # Found a swappable row, swap values
-                        temp_row = temp_self.body[r]
-                        temp_self.body[r] = temp_self.body[row]
-                        temp_self.body[row] = temp_row
-                        # Do same operation on result
-                        temp_row_result = result.body[r]
-                        result.body[r] = result.body[row]
-                        result.body[row] = temp_row_result
-
-        for row in range(self.rows):
-            # Generate each row op as a matrix, multiply iteratively with identity
-            row_op = Matrix(self.rows, self.rows)   # Current row operation
-            for r in range(row_op.rows):
-                for c in range(row_op.cols):
-                    if (r > c) and (c == row):
-                        row_op.body[r][c] = - temp_self.body[r][c] / temp_self.body[c][c]
-                    elif r == c:
-                        row_op.body[r][c] = 1
-                    else:
-                        row_op.body[r][c] = 0
-            result = row_op * result
-            temp_self = row_op * temp_self
-        del temp_self
-        return result
-
-    def _get_reduced_echelon_ops_matrix(self):
-        """
-        Makes matrix B s.t. B*self = Reduced Echelon form of self.
-        Only works on square matrix with full rank and nonzero diagonal.
-        """
-        result = self._get_echelon_ops_matrix()
-        temp_self = result*copy.deepcopy(self)
-        for row in range(self.rows):
-            row_op = Matrix(self.rows, self.rows)   # Current row operation
-            for r in range(row_op.rows):
-                for c in range(row_op.cols):
-                    if (r < c) and (c == row):
-                        row_op.body[r][c] = - temp_self.body[r][c] / temp_self.body[c][c]
-                    elif r == c:
-                        row_op.body[r][c] = 1
-                    else:
-                        row_op.body[r][c] = 0
-            result = row_op * result
-            temp_self = row_op * temp_self
-        del temp_self
-        return result
-
     def get_inverse(self):
-        # Use row operations method, convert self to identity
-        # Do same row ops on identity to get inverse
         if not self.is_invertible():
             raise ValueError("Matrix is not invertible")
-        inverse = Matrix(self.rows, self.cols, [[1 if r == c else 0 for c in range(self.cols)]
-                                                for r in range(self.rows)])
-        # Start by doing row ops to make self into Reduced Echelon form on identity
-        inverse = self._get_reduced_echelon_ops_matrix() * inverse
-        # Now revert values on diagonal to 1
-        op_mat = Matrix(self.rows, self.rows)   # Current row operation
-        temp_self = self._get_reduced_echelon_ops_matrix() * copy.deepcopy(self)
-        for r in range(op_mat.rows):
-            for c in range(op_mat.cols):
-                if r == c:
-                    op_mat.body[r][c] = 1 / temp_self.body[r][c]
-                else:
-                    op_mat.body[r][c] = 0
-        return op_mat * inverse
+        temp_self = copy.deepcopy(self)
+        # Append identity matrix to right of matrix
+        for row in range(temp_self.rows):
+            temp_self.body[row] = temp_self.body[row] + [1 if c == row else 0
+                                                         for c in range(temp_self.cols)]
+        # Unique update of body, must manually reset temp_self.cols
+        temp_self.cols *= 2 # Is square matrix, so number of columns doubles
+        rref_temp_self = temp_self.get_row_reduced_echelon_form()
+        result = Matrix(self.rows, self.cols)
+        # Identity appended on right is now inverse, as left is now identity
+        for row in range(result.rows):
+            result.body[row] = rref_temp_self.body[row][self.rows:]
+        return result
 
 
 def main():
