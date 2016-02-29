@@ -27,9 +27,25 @@ Future features:
     * Limits
     * Integration (symbolic and definite)
     * Find max and min values
-* Sequences and series
-    * Infinite sums, tests for convergence and divergence
+    * Taylor and Maclaurin series
+    * Multivariate functions
+* Discrete math
+    * Graphs
+    * Sets
+    * Relations
+    * Logical statements
+* Abstract algebra
+    * Groups
+    * Permutations
+* Sequences
+    * Infinite sums
+        * Tests for convergence and divergence
 * Geometric shapes
+    * Circles and ellipses
+    * Arbitrary polygons
+    * Area, perimeter
+    * Solving for angles
+    * Finding symmetries
 * Random variables
     * Discrete and continuous
     * Expected value, variance, median and mode
