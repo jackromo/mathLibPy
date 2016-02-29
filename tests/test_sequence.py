@@ -21,3 +21,6 @@ class SequenceTester(unittest.TestCase):
     def test_func_seq_call(self):
         self.assertEqual(self.const_seq(0), 1)
         self.assertEqual(self.const_seq(10), 1)
+
+if __name__ == "__main__":
+    unittest.main()

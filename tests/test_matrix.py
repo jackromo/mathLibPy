@@ -73,3 +73,6 @@ class MatrixTester(unittest.TestCase):
 
     def test_get_row_reduced_echelon_form(self):
         self.assertEqual(self.m3.get_row_reduced_echelon_form(), Matrix.identity(3))
+
+if __name__ == "__main__":
+    unittest.main()

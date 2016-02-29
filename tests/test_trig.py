@@ -26,3 +26,6 @@ class TrigTester(unittest.TestCase):
 
     def test_cos_get_derivative_call(self):
         self.assertEqual(self.cos.get_derivative()(math.pi/2), -1)
+
+if __name__ == "__main__":
+    unittest.main()

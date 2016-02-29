@@ -14,3 +14,7 @@ class ExpTester(unittest.TestCase):
 
     def test_get_derivative(self):
         self.assertEqual(self.exp.get_derivative(), self.exp)
+
+
+if __name__ == "__main__":
+    unittest.main()

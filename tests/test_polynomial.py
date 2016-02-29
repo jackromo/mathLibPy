@@ -69,3 +69,6 @@ class PolynomialTester(unittest.TestCase):
     def test_get_derivative_call(self):
         self.assertEqual(self.p2.get_derivative()(1), 11)
         self.assertEqual(self.p1.get_derivative()(1), 0)
+
+if __name__ == "__main__":
+    unittest.main()
