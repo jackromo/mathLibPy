@@ -77,15 +77,3 @@ class GeometricSequence(Sequence):
 
     def _term_at(self, n):
         return self.initial * (self.const ** n)
-
-
-def main():
-    arith_seq = ArithmeticSequence(1, 1)
-    assert(arith_seq(0) == 1)
-    assert(arith_seq(2) == 3)
-    geom_seq = GeometricSequence(1, 2)
-    assert(geom_seq(0) == 1)
-    assert(geom_seq(3) == 8)
-
-if __name__ == "__main__":
-    main()
