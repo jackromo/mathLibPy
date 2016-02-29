@@ -10,7 +10,8 @@ Implemented features:
 * Functions
     * Polynomials
     * Trigonometric functions
-    * Exponential function
+    * Exponential function, logarithm
+        * Arbitrary powers and logarithm bases
     * Function combination and composition (addition, division, etc.)
     * Differentiation
 * Sequences
@@ -23,6 +24,7 @@ Future features:
     * Eigenvectors and eigenvalues
     * Diagonalization
 * Functions
+    * In-depth test for equalities (identities)
     * Find roots and fixed points
     * Limits
     * Integration (symbolic and definite)
