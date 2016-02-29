@@ -84,6 +84,11 @@ class Matrix(object):
         else:
             raise TypeError("Can only multiply matrix with scalar or another matrix")
 
+    @staticmethod
+    def identity(cols):
+        return Matrix(cols, cols, [[1 if r == c else 0 for c in range(cols)]
+                                   for r in range(cols)])
+
     def mul_scalar(self, other):
         return Matrix(self.rows,
                       self.cols,
@@ -181,10 +186,10 @@ class Matrix(object):
         if not self.is_invertible():
             raise ValueError("Matrix is not invertible")
         temp_self = copy.deepcopy(self)
+        ident = Matrix.identity(temp_self.cols)
         # Append identity matrix to right of matrix
         for row in range(temp_self.rows):
-            temp_self.body[row] = temp_self.body[row] + [1 if c == row else 0
-                                                         for c in range(temp_self.cols)]
+            temp_self.body[row] = temp_self.body[row] + ident.body[row]
         # Unique update of body, must manually reset temp_self.cols
         temp_self.cols *= 2 # Is square matrix, so number of columns doubles
         rref_temp_self = temp_self.get_row_reduced_echelon_form()
