@@ -126,7 +126,7 @@ class FunctionDivNode(FunctionBinaryTreeNode):
         if self.f2(x) == 0:
             raise Exception("Division by Zero detected")
         else:
-            return self.f1(x) / self.f2(x)
+            return self.f1(x) / float(self.f2(x))
 
     def get_derivative(self):
         # Use quotient rule
