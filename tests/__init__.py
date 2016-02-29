@@ -1,7 +1,9 @@
 from test_matrix import MatrixTester
+from test_polynomial import PolynomialTester
 import unittest
 
 
 def run_tests():
-    matrix_suite = unittest.TestLoader().loadTestsFromTestCase(MatrixTester)
-    unittest.TextTestRunner(verbosity=2).run(matrix_suite)
+    for tester in [MatrixTester, PolynomialTester]:
+        suite = unittest.TestLoader().loadTestsFromTestCase(tester)
+        unittest.TextTestRunner(verbosity=1).run(suite)
