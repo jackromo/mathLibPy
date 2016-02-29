@@ -23,6 +23,7 @@ Future features:
     * Eigenvectors and eigenvalues
     * Diagonalization
 * Functions
+    * In-depth test for equalities (identities)
     * Find roots and fixed points
     * Limits
     * Integration (symbolic and definite)
