@@ -12,6 +12,9 @@ class Exp(function.Function):
     def get_derivative(self):
         return self
 
+    def __eq__(self, other):
+        return isinstance(other, Exp)
+
 
 class Power(function.Function):
 
@@ -27,6 +30,11 @@ class Power(function.Function):
     def get_derivative(self):
         return self.exp(self.f2 * self.log(self.f1)).get_derivative()
 
+    def __eq__(self, other):
+        if not isinstance(other, Power):
+            return False
+        return (self.f1 == other.f1) and (self.f2 == other.f2)
+
 
 class Log(function.Function):
 
@@ -35,6 +43,9 @@ class Log(function.Function):
 
     def get_derivative(self):
         return function.Constant(1) / polynomial.Polynomial([0, 1])
+
+    def __eq__(self, other):
+        return isinstance(other, Log)
 
 
 class LogBase(function.Function):
@@ -57,3 +68,8 @@ class LogBase(function.Function):
             return ((function.Constant(1) / Log()(self.b)) * Log()).get_derivative()
         else:
             return ((function.Constant(1) / function.Constant(Log()(self.b))) * Log()).get_derivative()
+
+    def __eq__(self, other):
+        if not isinstance(other, LogBase):
+            return False
+        return self.b == other.b

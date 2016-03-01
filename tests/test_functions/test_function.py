@@ -14,6 +14,10 @@ class ConstantTester(unittest.TestCase):
         self.c1 = Constant(1)
         self.c2 = Constant(2)
 
+    def test_eq(self):
+        self.assertNotEqual(self.c1, self.c2)
+        self.assertEqual(self.c1, Constant(1))
+
     def test_call(self):
         self.assertEqual(self.c1(3), 1)
         self.assertEqual(self.c2(5), 2)
@@ -35,6 +39,10 @@ class FunctionAddNodeTester(unittest.TestCase):
         self.add1 = FunctionAddNode(Constant(1), Constant(2))
         self.add2 = FunctionAddNode(Constant(0), Constant(-2))
 
+    def test_eq(self):
+        self.assertNotEqual(self.add1, self.add2)
+        self.assertEqual(self.add1, FunctionAddNode(Constant(1), Constant(2)))
+
     def test_call(self):
         self.assertEqual(self.add1(1), 3)
         self.assertEqual(self.add2(1), -2)
@@ -53,6 +61,10 @@ class FunctionSubNodeTester(unittest.TestCase):
         self.sub1 = FunctionSubNode(Constant(1), Constant(2))
         self.sub2 = FunctionSubNode(Constant(0), Constant(-2))
 
+    def test_eq(self):
+        self.assertNotEqual(self.sub1, self.sub2)
+        self.assertEqual(self.sub1, FunctionSubNode(Constant(1), Constant(2)))
+
     def test_call(self):
         self.assertEqual(self.sub1(1), -1)
         self.assertEqual(self.sub2(1), 2)
@@ -70,6 +82,10 @@ class FunctionMulNodeTester(unittest.TestCase):
     def setUp(self):
         self.mul1 = FunctionMulNode(Constant(1), Constant(2))
         self.mul2 = FunctionMulNode(Constant(0), Constant(-2))
+
+    def test_eq(self):
+        self.assertNotEqual(self.mul1, self.mul2)
+        self.assertEqual(self.mul1, FunctionMulNode(Constant(1), Constant(2)))
 
     def test_call(self):
         self.assertEqual(self.mul1(1), 2)
@@ -90,6 +106,10 @@ class FunctionDivNodeTester(unittest.TestCase):
         self.div2 = FunctionDivNode(Constant(0), Constant(-2))
         self.div3 = FunctionDivNode(Constant(3), Constant(0))
 
+    def test_eq(self):
+        self.assertNotEqual(self.div1, self.div2)
+        self.assertEqual(self.div1, FunctionDivNode(Constant(1), Constant(2)))
+
     def test_call(self):
         self.assertEqual(self.div1(1), 0.5)
         self.assertEqual(self.div2(1), 0)
@@ -108,6 +128,10 @@ class FunctionCompNodeTester(unittest.TestCase):
     def setUp(self):
         self.comp1 = FunctionCompNode(Constant(1), Constant(2))
         self.comp2 = FunctionCompNode(Constant(0), Constant(-2))
+
+    def test_eq(self):
+        self.assertNotEqual(self.comp1, self.comp2)
+        self.assertEqual(self.comp1, FunctionCompNode(Constant(1), Constant(2)))
 
     def test_call(self):
         self.assertEqual(self.comp1(1), 1)

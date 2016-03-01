@@ -51,6 +51,12 @@ class Function(object):
         return FunctionDivNode(self, other)
 
     @abc.abstractmethod
+    def __eq__(self, other):
+        """
+        Currently checks for exact equivalences between functions.
+        """
+
+    @abc.abstractmethod
     def get_derivative(self):
         """
         Return own derivative as a function.
@@ -70,6 +76,11 @@ class FunctionBinaryTreeNode(Function):
             raise TypeError("Both inputs must be of type Function")
         self.f1 = f1
         self.f2 = f2
+
+    def __eq__(self, other):
+        if not isinstance(other, FunctionBinaryTreeNode):
+            return False
+        return (self.f1 == other.f1) and (self.f2 == other.f2)
 
 
 class FunctionAddNode(FunctionBinaryTreeNode):
@@ -164,3 +175,8 @@ class Constant(Function):
 
     def get_derivative(self):
         return Constant(0)
+
+    def __eq__(self, other):
+        if not isinstance(other, Constant):
+            return False
+        return self.val == other.val

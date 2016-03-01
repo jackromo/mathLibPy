@@ -10,6 +10,9 @@ class Sin(function.Function):
     def get_derivative(self):
         return Cos()
 
+    def __eq__(self, other):
+        return isinstance(other, Sin)
+
 
 class Cos(function.Function):
 
@@ -18,6 +21,9 @@ class Cos(function.Function):
 
     def get_derivative(self):
         return function.Constant(-1) * Sin()
+
+    def __eq__(self, other):
+        return isinstance(other, Cos)
 
 
 class Tan(function.Function):
@@ -31,3 +37,6 @@ class Tan(function.Function):
 
     def get_derivative(self):
         return function.Constant(1) / (Cos() * Cos())
+
+    def __eq__(self, other):
+        return isinstance(other, Tan)

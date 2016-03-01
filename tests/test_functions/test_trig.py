@@ -12,11 +12,20 @@ class TrigTester(unittest.TestCase):
     def test_sin_call(self):
         self.assertEqual(self.sin(0), 0)
 
+    def test_sin_eq(self):
+        self.assertEqual(self.sin, Sin())
+
     def test_cos_call(self):
         self.assertEqual(self.cos(0), 1)
 
+    def test_cos_eq(self):
+        self.assertEqual(self.cos, Cos())
+
     def test_tan_call(self):
         self.assertEqual(self.tan(0), 0)
+
+    def test_tan_eq(self):
+        self.assertEqual(self.tan, Tan())
 
     def test_add_call(self):
         self.assertEqual((self.tan + self.cos + self.sin)(0), 1)

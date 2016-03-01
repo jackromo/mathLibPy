@@ -8,6 +8,9 @@ class ExpTester(unittest.TestCase):
     def setUp(self):
         self.exp = Exp()
 
+    def test_eq(self):
+        self.assertEqual(self.exp, Exp())
+
     def test_call(self):
         self.assertEqual(self.exp(0), 1)
         self.assertEqual(self.exp(1), math.e)
@@ -20,6 +23,9 @@ class LogTester(unittest.TestCase):
 
     def setUp(self):
         self.log = Log()
+
+    def test_eq(self):
+        self.assertEqual(self.log, Log())
 
     def test_call(self):
         self.assertEqual(self.log(1), 0)
@@ -34,9 +40,13 @@ class LogTester(unittest.TestCase):
 class PowerTester(unittest.TestCase):
 
     def setUp(self):
-        self.pow1 = Power(function.Constant(1), function.Constant(1))
-        self.pow2 = Power(polynomial.Polynomial([0, 1]), function.Constant(2))
-        self.pow3 = Power(function.Constant(2), polynomial.Polynomial([0, 1]))
+        self.pow1 = Power(Constant(1), Constant(1))
+        self.pow2 = Power(Polynomial([0, 1]), Constant(2))
+        self.pow3 = Power(Constant(2), Polynomial([0, 1]))
+
+    def test_eq(self):
+        self.assertEqual(self.pow1, Power(Constant(1), Constant(1)))
+        self.assertEqual(self.pow2, Power(Polynomial([0, 1]), Constant(2)))
 
     def test_call(self):
         self.assertEqual(self.pow1(3), 1)
@@ -54,8 +64,12 @@ class LogBaseTester(unittest.TestCase):
     def setUp(self):
         self.log2 = LogBase(2)
         self.ln = LogBase(math.e)
-        self.log5 = LogBase(function.Constant(5))
-        self.log_x_squared = LogBase(polynomial.Polynomial([0, 0, 1]))
+        self.log5 = LogBase(Constant(5))
+        self.log_x_squared = LogBase(Polynomial([0, 0, 1]))
+
+    def test_eq(self):
+        self.assertEqual(self.log2, LogBase(2))
+        self.assertEqual(self.log_x_squared, LogBase(Polynomial([0, 0, 1])))
 
     def test_call(self):
         self.assertEqual(self.log2(2), 1)

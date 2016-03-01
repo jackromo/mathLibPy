@@ -22,6 +22,7 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
         * Arbitrary powers and logarithm bases
     * Function combination and composition (addition, division, etc.)
     * Differentiation
+    * Exact function equality test (equal if internal structures equal)
 * Sequences
     * Arithmetic and Geometric sequences
     * Generic sequence, takes any Function
@@ -32,7 +33,7 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
     * Eigenvectors and eigenvalues
     * Diagonalization
 * Functions
-    * In-depth test for equalities (identities)
+    * Intelligent function equality test (identities)
     * Find roots and fixed points
     * Limits
     * Integration (symbolic and definite)
