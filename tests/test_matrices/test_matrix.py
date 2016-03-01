@@ -1,5 +1,6 @@
-from matrix import *
 import unittest
+
+from mathlibpy.matrices import *
 
 
 class MatrixTester(unittest.TestCase):

@@ -1,4 +1,4 @@
-from function import *
+from mathlibpy.functions import *
 import unittest
 
 

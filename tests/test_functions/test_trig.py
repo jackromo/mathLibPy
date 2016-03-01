@@ -1,4 +1,4 @@
-from trig import *
+from mathlibpy.functions import *
 import unittest
 
 

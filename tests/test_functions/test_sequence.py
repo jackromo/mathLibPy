@@ -1,5 +1,4 @@
-from sequence import *
-from function import Constant
+from mathlibpy.functions import *
 import unittest
 
 

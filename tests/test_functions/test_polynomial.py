@@ -1,5 +1,4 @@
-from polynomial import *
-from function import FunctionAddNode
+from mathlibpy.functions import *
 import unittest
 
 
@@ -57,7 +56,7 @@ class PolynomialTester(unittest.TestCase):
         self.assertEqual((self.p1*self.p2)(1), 9)
 
     def test_div_call(self):
-        self.assertEqual((self.p1/self.p2)(1), 1 / 9)
+        self.assertEqual((self.p1/self.p2)(1), 1.0 / 9)
 
     def test_compose_call(self):
         self.assertEqual(self.p1(self.p2)(1), 1)

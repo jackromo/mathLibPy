@@ -1,4 +1,4 @@
-from exp import *
+from mathlibpy.functions import *
 import math
 import unittest
 
