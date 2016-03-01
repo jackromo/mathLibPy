@@ -26,6 +26,8 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
 * Sequences
     * Arithmetic and Geometric sequences
     * Generic sequence, takes any Function
+* Discrete math
+    * Finite Sets
 
 ## Future features
 
@@ -42,9 +44,23 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
     * Multivariate functions
 * Discrete math
     * Graphs
+        * Directed and undirected
+        * Test for acyclicity
+        * Minimum spanning trees
+        * Searches and shortest paths
+        * Relation to digraph conversion and vice versa
     * Sets
+        * Infinite sets, string definitions
+        * Power sets and partitions
     * Relations
+        * Produce range from domain and codomain
+        * Tests for totality, function, surjectivity and injectivity
+        * Composition and combination
+        * Conversion from total functions on real numbers to Functions
     * Logical statements
+        * Parse strings of logical statements
+        * Generate truth tables
+        * Generate proofs and counter examples
 * Abstract algebra
     * Groups
     * Permutations
