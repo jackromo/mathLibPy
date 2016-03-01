@@ -24,6 +24,12 @@ class Sequence(object):
         n is guaranteed to be an integer > 0.
         """
 
+    @abc.abstractmethod
+    def __eq__(self, other):
+        """
+        Will rely upon Function equality test, as many series will be implemented as Functions.
+        """
+
     def sum_from_to(self, i, n):
         """
         Given a value n, returns the sum of all items from i to n inclusive.
@@ -40,6 +46,11 @@ class FunctionSequence(Sequence):
         if not isinstance(f, function.Function):
             raise TypeError("Must supply Function to FunctionSequence")
         self.func = f
+
+    def __eq__(self, other):
+        if not isinstance(other, FunctionSequence):
+            return False
+        return self.func == other.func
 
     def _term_at(self, n):
         return self.func(n)
@@ -58,6 +69,11 @@ class ArithmeticSequence(Sequence):
         self.initial = initial
         self.const = c
 
+    def __eq__(self, other):
+        if not isinstance(other, ArithmeticSequence):
+            return False
+        return (self.initial == other.initial) and (self.const == other.const)
+
     def _term_at(self, n):
         return self.initial + (self.const * n)
 
@@ -74,6 +90,11 @@ class GeometricSequence(Sequence):
         """
         self.initial = initial
         self.const = r
+
+    def __eq__(self, other):
+        if not isinstance(other, GeometricSequence):
+            return False
+        return (self.initial == other.initial) and (self.const == other.const)
 
     def _term_at(self, n):
         return self.initial * (self.const ** n)
