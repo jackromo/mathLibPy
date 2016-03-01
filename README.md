@@ -1,7 +1,15 @@
+# MathLibPy
+
 This is a basic math library for Python.
 
+It's a work in progress, but if you're interested in contributing, feel free to contact me at sharrackor@gmail.com.
 
-Implemented features:
+## License
+
+MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
+
+## Features
+
 * Matrices
     * Arithmetic on matrices
     * Determinants and cofactors
@@ -18,8 +26,8 @@ Implemented features:
     * Arithmetic and Geometric sequences
     * Generic sequence, takes any Function
 
+## Future features
 
-Future features:
 * Matrices
     * Eigenvectors and eigenvalues
     * Diagonalization
