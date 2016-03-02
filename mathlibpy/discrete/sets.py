@@ -8,6 +8,64 @@ class SetPy(object):
 
     __metaclass__ = abc.ABCMeta
 
+    @abc.abstractmethod
+    def __contains__(self, item):
+        """
+        Check if contains item.
+        """
+
+    @abc.abstractmethod
+    def cardinality(self):
+        """
+        Return number of items in set.
+        """
+
+    @abc.abstractmethod
+    def union(self, other):
+        """
+        Other must be of type Set.
+        """
+
+    @abc.abstractmethod
+    def difference(self, other):
+        """
+        Return self \ other.
+        """
+
+    @abc.abstractmethod
+    def intersect(self, other):
+        """
+        Other must be of type Set.
+        """
+
+    @abc.abstractmethod
+    def is_disjoint(self, other):
+        """
+        Other must be of type Set.
+        """
+
+    @abc.abstractmethod
+    def is_subset(self, other):
+        """
+        Return whether self is a subset of other.
+        """
+
+    @abc.abstractmethod
+    def __eq__(self, other):
+        """"""
+
+    @abc.abstractmethod
+    def is_proper_subset(self, other):
+        """
+        Return whether self is a proper subset of other.
+        """
+
+
+class FiniteSetPy(SetPy):
+    """
+    A set defined by a predetermined list of items rather than a comprehension
+    """
+
     def __init__(self, elems=None):
         self.elems = []
         if isinstance(elems, list):
@@ -39,7 +97,8 @@ class SetPy(object):
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only union with another Set")
-        return SetPy(self.elems + other.elems)
+        elif isinstance(other, FiniteSetPy):
+            return FiniteSetPy(self.elems + other.elems)
 
     def difference(self, other):
         """
@@ -47,22 +106,26 @@ class SetPy(object):
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only take difference with another Set")
-        return SetPy([x for x in self.elems if x not in other.elems])
+        elif isinstance(other, FiniteSetPy):
+            return FiniteSetPy([x for x in self.elems if x not in other.elems])
 
     def intersect(self, other):
         if not isinstance(other, SetPy):
             raise TypeError("Can only intersect with another Set")
-        return SetPy([x for x in self.elems if x in other.elems])
+        elif isinstance(other, FiniteSetPy):
+            return FiniteSetPy([x for x in self.elems if x in other.elems])
 
     def is_disjoint(self, other):
         if not isinstance(other, SetPy):
             raise TypeError("Can only be disjoint with another Set")
-        return all(x not in other.elems for x in self.elems)
+        elif isinstance(other, FiniteSetPy):
+            return all(x not in other.elems for x in self.elems)
 
     def is_subset(self, other):
         if not isinstance(other, SetPy):
             raise TypeError("Can only be subset of another Set")
-        return all(x in other.elems for x in self.elems)
+        elif isinstance(other, FiniteSetPy):
+            return all(x in other.elems for x in self.elems)
 
     def __eq__(self, other):
         if not isinstance(other, SetPy):
@@ -70,4 +133,6 @@ class SetPy(object):
         return self.is_subset(other) and other.is_subset(self)
 
     def is_proper_subset(self, other):
+        if not isinstance(other, SetPy):
+            raise TypeError("Can only be proper subset of another Set")
         return self.is_subset(other) and self != other
