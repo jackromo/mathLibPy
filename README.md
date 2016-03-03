@@ -28,6 +28,7 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
     * Generic sequence, takes any Function
 * Discrete math
     * Finite Sets
+    * Union, intersect, difference
 
 ## Future features
 
@@ -50,7 +51,11 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
         * Searches and shortest paths
         * Relation to digraph conversion and vice versa
     * Sets
-        * Infinite sets, string definitions
+        * Infinite sets
+            * Real, Integer, Rational and Natural number sets
+        * String comprehension sets
+            * Grammar for comprehension language
+            * Test for if finite, if so then generate all elements
         * Power sets and partitions
     * Relations
         * Produce range from domain and codomain
