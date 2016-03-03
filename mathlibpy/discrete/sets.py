@@ -196,8 +196,6 @@ class FiniteSetPy(SetPy):
 
 class InfiniteSetPy(SetPy):
 
-    # TODO: finish this and create Real, Rational, Integer and Natural sets
-
     __metaclass__ = abc.ABCMeta
 
     def cardinality(self):
@@ -208,3 +206,44 @@ class InfiniteSetPy(SetPy):
 
     def elems(self):
         raise Exception("Set is infinite, cannot get all elems")
+
+
+class RealSet(InfiniteSetPy):
+
+    def __contains__(self, item):
+        return isinstance(item, float)
+
+    def cardinality(self):
+        return REAL_CARD
+
+
+class RationalSet(InfiniteSetPy):
+
+    def __contains__(self, item):
+        # Technically, as all numbers on a computer have finite decimal length,
+        # multiplying by a large enough power of 10 makes an integer,
+        # so all possible number arguments are rational.
+        return isinstance(item, float)
+
+    def cardinality(self):
+        return NAT_CARD
+
+
+class IntegerSet(InfiniteSetPy):
+
+    def __contains__(self, item):
+        return isinstance(item, int)
+
+    def cardinality(self):
+        return NAT_CARD
+
+
+class NaturalSet(InfiniteSetPy):
+
+    def __contains__(self, item):
+        if isinstance(item, int):
+            return item > 0
+        return False
+
+    def cardinality(self):
+        return NAT_CARD
