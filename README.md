@@ -31,6 +31,8 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
     * Infinite sets
         * Real, Integer, Rational and Natural number sets
     * Union, intersect, difference
+    * Cardinality, subset, proper subset and equality tests
+        * Returns different infinities for different infinite sets
 
 ## Future features
 
