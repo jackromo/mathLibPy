@@ -33,6 +33,9 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
     * Union, intersect, difference
     * Cardinality, subset, proper subset and equality tests
         * Returns different infinities for different infinite sets
+    * Sets defined as intervals
+* Infinities
+    * Comparison of different infinities
 
 ## Future features
 

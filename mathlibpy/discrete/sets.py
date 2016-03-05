@@ -1,5 +1,6 @@
 import abc
-from mathlibpy.constants import *
+import numbers
+from set_trees import *
 
 
 class SetPy(object):
@@ -206,6 +207,56 @@ class InfiniteSetPy(SetPy):
 
     def elems(self):
         raise Exception("Set is infinite, cannot get all elems")
+
+
+class RangeSetPy(SetPy):
+    """
+    Set defined as all elements between two bounding elements.
+    """
+
+    def __init__(self, range_ls, range_type="real"):
+        if not isinstance(range_ls, list):
+            raise TypeError("Range must be of type list")
+        elif not len(range_ls) == 2:
+            raise ValueError("Range must be of length 2")
+        elif not all(isinstance(x, numbers.Number) for x in range_ls):
+            raise ValueError("Values must be Numbers")
+        elif not range_ls[1] >= range_ls[0]:
+            raise ValueError("Upper bound must be >= lower bound")
+        elif range_type not in ["real", "int"]:
+            raise ValueError("Range type must be either 'real' or 'int'")
+        self.range_min = range_ls[0]
+        self.range_max = range_ls[1]
+        self.range_type = range_type
+
+    def __contains__(self, item):
+        if self.range_type == "real":
+            return self.range_min < item
+        elif self.range_type == "int":
+            return isinstance(item, int) and self.range_min < item
+        else:
+            raise Exception("Range_type not of known types")
+
+    def cardinality(self):
+        if self.range_type == "real":
+            return REAL_CARD
+        elif self.range_type == "int":
+            return int(self.range_max - self.range_min)
+        else:
+            raise Exception("Range_type not of known types")
+
+    def is_finite(self):
+        if isinstance(self.range_min, Infinity) or isinstance(self.range_max, Infinity):
+            return False
+        elif self.range_type == "real":
+            return False
+        return True
+
+    def elems(self):
+        if not self.is_finite():
+            raise Exception("Set is infinite, cannot list all elements")
+        else:
+            return range(int(self.range_min), int(self.range_max))
 
 
 class RealSet(InfiniteSetPy):
