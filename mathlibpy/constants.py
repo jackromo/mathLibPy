@@ -50,6 +50,28 @@ class Infinity(object):
         else:
             raise TypeError("Not composable with non-number or infinity")
 
+    def __mul__(self, other):
+        if isinstance(other, numbers.Number):
+            if other == 0:
+                return 0
+            else:
+                return self
+        elif isinstance(other, Infinity):
+            return self
+        else:
+            raise TypeError("Not composable with non-number or infinity")
+
+    def __div__(self, other):
+        if isinstance(other, numbers.Number):
+            if other == 0:
+                raise ZeroDivisionError()
+            else:
+                return self
+        elif isinstance(other, Infinity):
+            return self
+        else:
+            raise TypeError("Not composable with non-number or infinity")
+
 
 INFINITY = Infinity(1, 0)
 NEG_INF = Infinity(-1, 0)     # Negative infinity
