@@ -35,7 +35,7 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
         * Returns different infinities for different infinite sets
     * Sets defined as intervals
 * Infinities
-    * Comparison of different infinities
+    * Comparison of different infinities and with finite numbers
 
 ## Future features
 
