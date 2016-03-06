@@ -33,6 +33,23 @@ class Infinity(object):
         else:
             raise TypeError("Not comparable with non-number or infinity")
 
+    def __add__(self, other):
+        if isinstance(other, numbers.Number):
+            return self
+        elif isinstance(other, Infinity):
+            if other.grp_id == self.grp_id:
+                return max(self, other)
+            else:
+                return self
+        else:
+            raise TypeError("Not composable with non-number or infinity")
+
+    def __sub__(self, other):
+        if isinstance(other, numbers.Number) or isinstance(other, Infinity):
+            return self
+        else:
+            raise TypeError("Not composable with non-number or infinity")
+
 
 INFINITY = Infinity(1, 0)
 NEG_INF = Infinity(-1, 0)     # Negative infinity

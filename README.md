@@ -36,6 +36,7 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
     * Sets defined as intervals
 * Infinities
     * Comparison of different infinities and with finite numbers
+    * Addition and subtraction
 
 ## Future features
 
