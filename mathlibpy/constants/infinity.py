@@ -12,7 +12,7 @@ class Infinity(object):
 
     def __lt__(self, other):
         if isinstance(other, numbers.Number):
-            return self.rank >= 0
+            return self.rank < 0
         elif isinstance(other, Infinity):
             return self.grp_id == other.grp_id and self.rank < other.rank
         else:
@@ -25,11 +25,14 @@ class Infinity(object):
 
     def __gt__(self, other):
         if isinstance(other, numbers.Number):
-            return self.rank < 0
+            return self.rank >= 0
         elif isinstance(other, Infinity):
             return self.grp_id == other.grp_id and self.rank > other.rank
         else:
             raise TypeError("Not comparable with non-number or infinity")
+
+    def __neg__(self):
+        return Infinity(-self.rank, self.grp_id)
 
     def __add__(self, other):
         if isinstance(other, numbers.Number):
@@ -52,10 +55,12 @@ class Infinity(object):
         if isinstance(other, numbers.Number):
             if other == 0:
                 return 0
+            elif (other / float(abs(other))) != (self.rank / float(abs(self.rank))):
+                return -self
             else:
                 return self
         elif isinstance(other, Infinity):
-            return self
+            return Infinity(self.rank * (other.rank / float(abs(other.rank))), self.grp_id)
         else:
             raise TypeError("Not composable with non-number or infinity")
 
@@ -63,10 +68,12 @@ class Infinity(object):
         if isinstance(other, numbers.Number):
             if other == 0:
                 raise ZeroDivisionError()
+            elif (other / float(abs(other))) != (self.rank / float(abs(self.rank))):
+                return -self
             else:
                 return self
         elif isinstance(other, Infinity):
-            return self
+            return Infinity(self.rank * (other.rank / float(abs(other.rank))), self.grp_id)
         else:
             raise TypeError("Not composable with non-number or infinity")
 
