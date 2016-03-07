@@ -79,31 +79,28 @@ class IrrationalNumber(numbers.Number):
     (This is due to them all having finite decimal places.)
     """
 
-    TEST_ACCURACY = 100     # number of decimal places needed to be equal for 2 irrational numbers to be equal
+    TEST_ACCURACY = 10     # number of decimal places needed to be equal for 2 irrational numbers to be equal
 
-    def __init__(self, generator):
-        """
-        Takes a generator function that returns value to provided number of decimal places.
-        """
-        if not hasattr(generator, "__call__"):
-            raise TypeError("Irrational number requires a generator function to produce value")
-        self.generator = generator
+    def __init__(self, val):
+        if not isinstance(val, numbers.Number):
+            raise TypeError("Irrational number requires base Number value")
+        self.val = val
 
     def __eq__(self, other):
         if not isinstance(other, IrrationalNumber):
             return False
-        elif other.generator == self.generator:
+        elif other.val == self.val:
             return True
         else:
             # see if both values return same number up to a degree of accuracy
-            return other.generator(IrrationalNumber.TEST_ACCURACY) == \
-                   self.generator(IrrationalNumber.TEST_ACCURACY)
+            return round(other.val, IrrationalNumber.TEST_ACCURACY) == \
+                   round(self.val, IrrationalNumber.TEST_ACCURACY)
 
     def __float__(self):
-        return self.generator(20)
+        return self.val
 
     def __int__(self):
-        return self.generator(0)
+        return int(round(self.val, 0))
 
 
 INFINITY = Infinity(1, 0)
@@ -113,3 +110,7 @@ UNDEFINED = "undefined"       # Not a value, incomparable
 # Cardinalities of sets, incomparable with aforementioned INFINITY
 REAL_CARD = Infinity(2, 1)     # Cardinality of the set of real numbers
 NAT_CARD = Infinity(1, 1)      # Cardinality of the set of natural numbers
+
+# Irrational numbers
+PI = IrrationalNumber(3.14159265)
+E = IrrationalNumber(2.718281828)
