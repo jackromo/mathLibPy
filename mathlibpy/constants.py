@@ -82,7 +82,7 @@ class IrrationalNumber(numbers.Number):
     TEST_ACCURACY = 10     # number of decimal places needed to be equal for 2 irrational numbers to be equal
 
     def __init__(self, val):
-        if not isinstance(val, numbers.Number):
+        if not (isinstance(val, int) or isinstance(val, float)):
             raise TypeError("Irrational number requires base Number value")
         self.val = val
 
@@ -101,6 +101,25 @@ class IrrationalNumber(numbers.Number):
 
     def __int__(self):
         return int(round(self.val, 0))
+
+    def __add__(self, other):
+        if isinstance(other, int) or isinstance(other, float):
+            return IrrationalNumber(self.val + other)
+        elif isinstance(other, IrrationalNumber):
+            return IrrationalNumber(self.val + other.val)
+        else:
+            return self.val + other
+
+    def __sub__(self, other):
+        if isinstance(other, int) or isinstance(other, float):
+            return IrrationalNumber(self.val - other)
+        elif isinstance(other, IrrationalNumber):
+            return IrrationalNumber(self.val - other.val)
+        else:
+            return self.val - other
+
+    def __neg__(self):
+        return IrrationalNumber(-self.val)
 
 
 INFINITY = Infinity(1, 0)
