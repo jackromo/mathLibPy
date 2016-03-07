@@ -86,6 +86,11 @@ class IrrationalNumber(numbers.Number):
             raise TypeError("Irrational number requires base Number value")
         self.val = val
 
+    def __lt__(self, other):
+        if isinstance(other, IrrationalNumber):
+            return self.val < other.val
+        return self.val < other
+
     def __eq__(self, other):
         if not isinstance(other, IrrationalNumber):
             return False
@@ -95,6 +100,11 @@ class IrrationalNumber(numbers.Number):
             # see if both values return same number up to a degree of accuracy
             return round(other.val, IrrationalNumber.TEST_ACCURACY) == \
                    round(self.val, IrrationalNumber.TEST_ACCURACY)
+
+    def __gt__(self, other):
+        if isinstance(other, IrrationalNumber):
+            return self.val > other.val
+        return self.val > other
 
     def __float__(self):
         return self.val
