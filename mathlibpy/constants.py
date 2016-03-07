@@ -73,6 +73,39 @@ class Infinity(object):
             raise TypeError("Not composable with non-number or infinity")
 
 
+class IrrationalNumber(numbers.Number):
+    """
+    Irrational numbers must be a different type from floats, as all floats are rational.
+    (This is due to them all having finite decimal places.)
+    """
+
+    TEST_ACCURACY = 100     # number of decimal places needed to be equal for 2 irrational numbers to be equal
+
+    def __init__(self, generator):
+        """
+        Takes a generator function that returns value to provided number of decimal places.
+        """
+        if not hasattr(generator, "__call__"):
+            raise TypeError("Irrational number requires a generator function to produce value")
+        self.generator = generator
+
+    def __eq__(self, other):
+        if not isinstance(other, IrrationalNumber):
+            return False
+        elif other.generator == self.generator:
+            return True
+        else:
+            # see if both values return same number up to a degree of accuracy
+            return other.generator(IrrationalNumber.TEST_ACCURACY) == \
+                   self.generator(IrrationalNumber.TEST_ACCURACY)
+
+    def __float__(self):
+        return self.generator(20)
+
+    def __int__(self):
+        return self.generator(0)
+
+
 INFINITY = Infinity(1, 0)
 NEG_INF = Infinity(-1, 0)     # Negative infinity
 UNDEFINED = "undefined"       # Not a value, incomparable
