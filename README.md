@@ -37,8 +37,7 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
 * Infinities
     * Comparison of different infinities and with finite numbers
     * Addition, subtraction, multiplication and division
-* Irrational numbers from base values
-    * pi, e
+* Irrational numbers from base values (pi, e, etc.)
 
 ## Future features
 

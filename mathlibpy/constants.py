@@ -121,6 +121,34 @@ class IrrationalNumber(numbers.Number):
     def __neg__(self):
         return IrrationalNumber(-self.val)
 
+    def __mul__(self, other):
+        if isinstance(other, int) or isinstance(other, float):
+            return 0 if other == 0 else IrrationalNumber(self.val * other)
+        elif isinstance(other, IrrationalNumber):
+            return IrrationalNumber(self.val * other.val)
+        else:
+            return self.val * other
+
+    def __div__(self, other):
+        if isinstance(other, int) or isinstance(other, float):
+            if other == 0:
+                raise ZeroDivisionError()
+            return IrrationalNumber(self.val / float(other))
+        elif isinstance(other, IrrationalNumber):
+            return IrrationalNumber(self.val / float(other.val))
+        else:
+            return self.val / float(other)
+
+    def __pow__(self, power):
+        if isinstance(power, int) or isinstance(power, float):
+            if power == 0:
+                return 1
+            return IrrationalNumber(self.val ** power)
+        elif isinstance(power, IrrationalNumber):
+            return IrrationalNumber(self.val ** power.val)
+        else:
+            return self.val ** power
+
 
 INFINITY = Infinity(1, 0)
 NEG_INF = Infinity(-1, 0)     # Negative infinity
