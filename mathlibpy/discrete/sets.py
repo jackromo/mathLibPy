@@ -187,7 +187,30 @@ class FiniteSetPy(SetPy):
     def cardinality(self):
         return len(self._elems)
 
-    # TODO: override union(), intersect(), difference(), is_subset()
+    def union(self, other):
+        if not isinstance(other, SetPy):
+            raise TypeError("Can only union with another SetPy")
+        elif other.is_finite():
+            return FiniteSetPy(self.elems() + other.elems())
+        else:
+            # May need to change this, prevent nested SetPyUnionNodes
+            reduced_self_elems = [x for x in self.elems() if x not in other]
+            return SetPyUnionNode(FiniteSetPy(reduced_self_elems), other)
+
+    def intersect(self, other):
+        if not isinstance(other, SetPy):
+            raise TypeError("Can only intersect with another SetPy")
+        return FiniteSetPy([x for x in self.elems() if x in other])
+
+    def difference(self, other):
+        if not isinstance(other, SetPy):
+            raise TypeError("Can only make difference with another SetPy")
+        return FiniteSetPy([x for x in self.elems() if x not in other])
+
+    def is_subset(self, other):
+        if not isinstance(other, SetPy):
+            raise TypeError("Can only be subset of another SetPy")
+        return all([x in other for x in self.elems()])
 
 
 class RangesSetPy(SetPy):
@@ -258,8 +281,8 @@ class RangesSetPy(SetPy):
         Reduce integer ranges to make them disjoint from real ranges.
         """
         ints_range = RangesSetPy(copy.deepcopy(self.int_ranges), [])
-        real_pairs = RangesSetPy(copy.deepcopy(self.real_ranges), [])
-        resulting_int_range = ints_range.difference(real_pairs)
+        reals_range = RangesSetPy(copy.deepcopy(self.real_ranges), [])
+        resulting_int_range = ints_range.difference(reals_range)
         return resulting_int_range.real_ranges
 
     def union(self, other):
