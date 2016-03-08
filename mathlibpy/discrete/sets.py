@@ -1,6 +1,8 @@
 import abc
 import numbers
-from set_trees import *
+import math
+import copy
+from mathlibpy.constants import *
 
 
 class SetPy(object):
@@ -119,20 +121,11 @@ class SetPyIntersectNode(SetPyTreeNode):
 
     def cardinality(self):
         if self.s1.is_finite():
-            result = 0
-            for elem in self.s1.elems():
-                if elem in self.s2:
-                    result += 1
-            return result
+            return len(filter(lambda x: x in self.s2, self.s1.elems()))
         elif self.s2.is_finite():
-            result = 0
-            for elem in self.s2.elems():
-                if elem in self.s1:
-                    result += 1
-            return result
+            return len(filter(lambda x: x in self.s1, self.s2.elems()))
         else:
-            # Placeholder, when infinite sets developed then will return correct infinity
-            return INFINITY
+            return self.s1.cardinality() + self.s2.cardinality()
 
     def elems(self):
         if not self.is_finite():
@@ -170,7 +163,7 @@ class SetPyDifferenceNode(SetPyTreeNode):
 
 class FiniteSetPy(SetPy):
     """
-    A set defined by a predetermined list of items rather than a comprehension
+    A set defined by a predetermined list of items rather than a range
     """
 
     def __init__(self, elems=None):
@@ -194,107 +187,123 @@ class FiniteSetPy(SetPy):
     def cardinality(self):
         return len(self._elems)
 
-
-class InfiniteSetPy(SetPy):
-
-    __metaclass__ = abc.ABCMeta
-
-    def cardinality(self):
-        return INFINITY
-
-    def is_finite(self):
-        return False
-
-    def elems(self):
-        raise Exception("Set is infinite, cannot get all elems")
+    # TODO: override union(), intersect(), difference(), is_subset()
 
 
-class RangeSetPy(SetPy):
+class RangesSetPy(SetPy):
     """
-    Set defined as all elements between two bounding elements.
+    A series of disjoint open ranges, consisting of either integers or real numbers.
     """
 
-    def __init__(self, range_ls, range_type="real"):
-        if not isinstance(range_ls, list):
-            raise TypeError("Range must be of type list")
-        elif not len(range_ls) == 2:
-            raise ValueError("Range must be of length 2")
-        elif not all(isinstance(x, numbers.Number) for x in range_ls):
-            raise ValueError("Values must be Numbers")
-        elif not range_ls[1] >= range_ls[0]:
-            raise ValueError("Upper bound must be >= lower bound")
-        elif range_type not in ["real", "int"]:
-            raise ValueError("Range type must be either 'real' or 'int'")
-        self.range_min = range_ls[0]
-        self.range_max = range_ls[1]
-        self.range_type = range_type
+    def __init__(self, real_ranges, int_ranges):
+        # real_ranges and int_ranges must be list of numbers
+        if not isinstance(real_ranges, list):
+            raise TypeError("Real ranges must be a list")
+        elif not isinstance(int_ranges, list):
+            raise TypeError("Int ranges must be a list")
+        elif (len(real_ranges) % 2) != 0:
+            raise ValueError("Both lists of ranges must have even length")
+        elif (len(int_ranges) % 2) != 0:
+            raise ValueError("Both lists of ranges must have even length")
+        elif int_ranges != sorted(int_ranges):
+            raise ValueError("Int ranges must be sorted")
+        elif real_ranges != sorted(real_ranges):
+            raise ValueError("Real ranges must be sorted")
+        self.real_ranges = copy.deepcopy(real_ranges)
+        self.int_ranges = copy.deepcopy(int_ranges)
+
+    def get_real_range_pairs(self):
+        return zip(self.real_ranges, self.real_ranges[1:])[::2]
+
+    def get_int_range_pairs(self):
+        return zip(self.int_ranges, self.int_ranges[1:])[::2]
 
     def __contains__(self, item):
-        if self.range_type == "real":
-            return self.range_min < item
-        elif self.range_type == "int":
-            return isinstance(item, int) and self.range_min < item
-        else:
-            raise Exception("Range_type not of known types")
+        if not isinstance(item, numbers.Number):
+            return False
+        elif int(item) == item and any(p[0] < item < p[1] for p in self.get_int_range_pairs()):
+            return True
+        return any(p[0] < item < p[1] for p in self.get_real_range_pairs())
+
+    @classmethod
+    def _int_range_len(cls, lower, upper):
+        length = math.ceil(upper) - math.floor(lower) - 1
+        return length if length >= 0 else 0
 
     def cardinality(self):
-        if self.range_type == "real":
+        if len(self.real_ranges) > 0:
             return REAL_CARD
-        elif self.range_type == "int":
-            return int(self.range_max - self.range_min)
+        elif any(isinstance(x, Infinity) for x in self.int_ranges):
+            return NAT_CARD
         else:
-            raise Exception("Range_type not of known types")
+            return sum(RangesSetPy._int_range_len(*p) for p in self.get_int_range_pairs())
 
     def is_finite(self):
-        if isinstance(self.range_min, Infinity) or isinstance(self.range_max, Infinity):
-            return False
-        elif self.range_type == "real":
-            return False
-        return True
+        return not isinstance(self.cardinality(), Infinity)
 
     def elems(self):
-        if not self.is_finite():
-            raise Exception("Set is infinite, cannot list all elements")
+        if self.is_finite():
+            # If finite, no real ranges
+            result = []
+            for p in self.get_int_range_pairs():
+                lower = p[0] + 1
+                upper = RangesSetPy._int_range_len(*p) + lower
+                result.append(range(lower, upper))
+            return result
         else:
-            return range(int(self.range_min), int(self.range_max))
+            raise Exception("Is infinite, cannot get all elements")
+
+    def _absorb_ints_into_reals(self):
+        """
+        Reduce integer ranges to make them disjoint from real ranges.
+        """
+        ints_range = RangesSetPy(copy.deepcopy(self.int_ranges), [])
+        real_pairs = RangesSetPy(copy.deepcopy(self.real_ranges), [])
+        resulting_int_range = ints_range.difference(real_pairs)
+        return resulting_int_range.real_ranges
+
+    def union(self, other):
+        # TODO
+        return self
+
+    def intersect(self, other):
+        # TODO
+        return self
+
+    def difference(self, other):
+        # TODO
+        return self
+
+    def is_subset(self, other):
+        if not isinstance(other, SetPy):
+            raise TypeError("Can only be subset of a SetPy")
+        elif isinstance(other, RangesSetPy):
+            intersect = self.intersect(other)
+            return sorted(intersect.real_ranges) == sorted(self.real_ranges) and \
+                sorted(intersect.int_ranges) == sorted(self.int_ranges)
+        elif self.is_finite():
+            return FiniteSetPy(self.elems()).is_subset(other)
+        elif other.is_finite():
+            return False
+        else:
+            # Must be a union node (intersect and difference can be handled by RangesSetPy and FiniteSetPy)
+            # TODO
+            raise TypeError("Not able to deduce if subset")
 
 
-class RealSet(InfiniteSetPy):
+class RealSetPy(object):
 
-    def __contains__(self, item):
-        return isinstance(item, float)
-
-    def cardinality(self):
-        return REAL_CARD
+    def __new__(cls):
+        return RangesSetPy([NEG_INF, INFINITY], [])
 
 
-class RationalSet(InfiniteSetPy):
+class IntegerSetPy(object):
 
-    def __contains__(self, item):
-        # Technically, as all numbers on a computer have finite decimal length,
-        # multiplying by a large enough power of 10 makes an integer,
-        # so all possible number arguments are rational.
-        return isinstance(item, float)
-
-    def cardinality(self):
-        return NAT_CARD
+    def __new__(cls):
+        return RangesSetPy([], [NEG_INF, INFINITY])
 
 
-class IntegerSet(InfiniteSetPy):
+class NaturalSetPy(object):
 
-    def __contains__(self, item):
-        return isinstance(item, int)
-
-    def cardinality(self):
-        return NAT_CARD
-
-
-class NaturalSet(InfiniteSetPy):
-
-    def __contains__(self, item):
-        if isinstance(item, int):
-            return item > 0
-        return False
-
-    def cardinality(self):
-        return NAT_CARD
+    def __new__(cls):
+        return RangesSetPy([], [0, INFINITY])

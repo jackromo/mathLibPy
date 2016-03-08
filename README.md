@@ -29,11 +29,11 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
 * Discrete math
     * Finite Sets
     * Infinite sets
-        * Real, Integer, Rational and Natural number sets
+        * Real, Integer and Natural number sets
     * Union, intersect, difference
     * Cardinality, subset, proper subset and equality tests
         * Returns different infinities for different infinite sets
-    * Sets defined as intervals
+    * Sets defined as series of disjoint ranges of real and integral values
 * Infinities
     * Comparison of different infinities and with finite numbers
     * Addition, subtraction, multiplication and division
