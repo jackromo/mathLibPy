@@ -283,11 +283,49 @@ class RangesSetPy(SetPy):
         ints_range = RangesSetPy(copy.deepcopy(self.int_ranges), [])
         reals_range = RangesSetPy(copy.deepcopy(self.real_ranges), [])
         resulting_int_range = ints_range.difference(reals_range)
-        return resulting_int_range.real_ranges
+        self.int_ranges = resulting_int_range.real_ranges
 
     def union(self, other):
-        # TODO
-        return self
+        if not isinstance(other, SetPy):
+            raise TypeError("Can only union with another SetPy")
+        elif isinstance(other, RangesSetPy):
+            # Put all ranges in one ordered list together
+            # Continuously iterate over all elements, unioning them if intersecting
+            # If list remains identical after iteration, finish
+            ranges = []
+            for range_pairs in [self.get_real_range_pairs() + other.get_real_range_pairs(),
+                                self.get_int_range_pairs() + other.get_int_range_pairs()]:
+                new_range_pairs = sorted(range_pairs,
+                                         key=lambda p: p[0])
+                old_range_pairs = []
+                while new_range_pairs != old_range_pairs:
+                    old_range_pairs = copy.deepcopy(new_range_pairs)
+                    for p1, p2 in zip(new_range_pairs, new_range_pairs[1:]):
+                        if p1[0] <= p2[0] <= p1[1] and p1[0] <= p2[1] <= p1[1]:
+                            new_range_pairs.remove(p2)
+                            break   # Has modified list, so zipped list being iterated over is now outdated
+                        elif p2[0] <= p1[0] <= p2[1] and p2[0] <= p1[1] <= p2[1]:
+                            new_range_pairs.remove(p1)
+                            break
+                        elif p1[0] <= p2[0] < p1[1]:
+                            new_range_pairs.remove(p1)
+                            new_range_pairs[new_range_pairs.index(p2)] = (p1[0], p2[1])
+                            break
+                        elif p1[0] < p2[1] <= p1[1]:
+                            new_range_pairs.remove(p1)
+                            new_range_pairs[new_range_pairs.index(p2)] = (p2[0], p1[1])
+                            break
+                range_ls = sorted([x[0] for x in old_range_pairs] + [x[1] for x in old_range_pairs])
+                ranges.append(range_ls)
+            result = RangesSetPy(*ranges)
+            result._absorb_ints_into_reals()    # Doesn't work yet as difference is not finished
+            return result
+        elif self.is_finite():
+            # other must be finite set
+            return FiniteSetPy(self.elems() + other.elems())
+        else:
+            # TODO
+            return SetPyUnionNode(self, other.difference(self))
 
     def intersect(self, other):
         # TODO
