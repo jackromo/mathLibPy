@@ -71,8 +71,22 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
         * Generate truth tables
         * Generate proofs and counter examples
 * Abstract algebra
-    * Groups
-    * Permutations
+    * Groups (finite)
+        * Test if set is group under operator
+        * Find identity and inverses of elements
+        * Find subgroups
+        * Test if two groups are isomorphic
+    * Permutations (finite)
+        * Test if function is permutation on a finite set
+        * Decompose permutation into disjoint cycles
+        * Find if permutation is even or odd
+        * Compose permutations
+        * Find order of permutation
+* Number theory
+    * Greatest common divisor / lowest common multiple
+        * Euclid's algorithm
+    * Modular arithmetic
+    * Coprime and prime tests
 * Sequences
     * Infinite sums
         * Tests for convergence and divergence
