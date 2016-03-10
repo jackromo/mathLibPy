@@ -30,10 +30,10 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
     * Finite Sets
     * Infinite sets
         * Real, Integer and Natural number sets
+        * Sets of disjoint ranges (real and integer ranges)
     * Union, intersect, difference
     * Cardinality, subset, proper subset and equality tests
         * Returns different infinities for different infinite sets
-    * Sets defined as series of disjoint ranges of real and integral values
 * Infinities
     * Comparison of different infinities and with finite numbers
     * Addition, subtraction, multiplication and division
@@ -60,9 +60,6 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
         * Searches and shortest paths
         * Relation to digraph conversion and vice versa
     * Sets
-        * String comprehension sets
-            * Grammar for comprehension language
-            * Test for if finite, if so then generate all elements
         * Power sets and partitions
     * Relations
         * Produce range from domain and codomain
