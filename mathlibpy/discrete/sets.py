@@ -293,30 +293,11 @@ class RangesSetPy(SetPy):
             # Continuously iterate over all elements, unioning them if intersecting
             # If list remains identical after iteration, finish
             ranges = []
-            for range_pairs in [self.get_real_range_pairs() + other.get_real_range_pairs(),
-                                self.get_int_range_pairs() + other.get_int_range_pairs()]:
-                new_range_pairs = sorted(range_pairs,
-                                         key=lambda p: p[0])
-                old_range_pairs = []
-                while new_range_pairs != old_range_pairs:
-                    old_range_pairs = copy.deepcopy(new_range_pairs)
-                    for p1, p2 in zip(new_range_pairs, new_range_pairs[1:]):
-                        if p1[0] <= p2[0] <= p1[1] and p1[0] <= p2[1] <= p1[1]:
-                            new_range_pairs.remove(p2)
-                            break   # Has modified list, so zipped list being iterated over is now outdated
-                        elif p2[0] <= p1[0] <= p2[1] and p2[0] <= p1[1] <= p2[1]:
-                            new_range_pairs.remove(p1)
-                            break
-                        elif p1[0] <= p2[0] < p1[1]:
-                            new_range_pairs.remove(p1)
-                            new_range_pairs[new_range_pairs.index(p2)] = (p1[0], p2[1])
-                            break
-                        elif p1[0] < p2[1] <= p1[1]:
-                            new_range_pairs.remove(p1)
-                            new_range_pairs[new_range_pairs.index(p2)] = (p2[0], p1[1])
-                            break
-                range_ls = sorted([x[0] for x in old_range_pairs] + [x[1] for x in old_range_pairs])
-                ranges.append(range_ls)
+            for pairs in [self.get_real_range_pairs() + other.get_real_range_pairs(),
+                          self.get_int_range_pairs() + other.get_int_range_pairs()]:
+                ranges_pairs = self._union_range_pairs(pairs)
+                ranges_ls = sorted([x[0] for x in ranges_pairs] + [x[1] for x in ranges_pairs])
+                ranges.append(ranges_ls)
             result = RangesSetPy(*ranges)
             result._absorb_ints_into_reals()    # Doesn't work yet as difference is not finished
             return result
@@ -327,9 +308,77 @@ class RangesSetPy(SetPy):
             # TODO
             return SetPyUnionNode(self, other.difference(self))
 
+    def _union_range_pairs(self, pairs):
+        new_range_pairs = sorted(pairs, key=lambda p: p[0])
+        old_range_pairs = []
+        # Continuously union ranges with their neighbors, keep doing this until cannot anymore
+        while new_range_pairs != old_range_pairs:
+            old_range_pairs = copy.deepcopy(new_range_pairs)
+            for p1, p2 in zip(new_range_pairs, new_range_pairs[1:]):
+                if p1[0] <= p2[0] <= p1[1] and p1[0] <= p2[1] <= p1[1]:
+                    new_range_pairs.remove(p2)
+                    break   # Has modified list, so zipped list being iterated over is now outdated
+                elif p2[0] <= p1[0] <= p2[1] and p2[0] <= p1[1] <= p2[1]:
+                    new_range_pairs.remove(p1)
+                    break
+                elif p1[0] <= p2[0] < p1[1]:
+                    new_range_pairs.remove(p1)
+                    new_range_pairs[new_range_pairs.index(p2)] = (p1[0], p2[1])
+                    break
+                elif p1[0] < p2[1] <= p1[1]:
+                    new_range_pairs.remove(p1)
+                    new_range_pairs[new_range_pairs.index(p2)] = (p2[0], p1[1])
+                    break
+        return new_range_pairs
+
     def intersect(self, other):
-        # TODO
-        return self
+        if not isinstance(other, SetPy):
+            raise TypeError("Can only intersect with another SetPy")
+        elif isinstance(other, RangesSetPy):
+            self_reals = self.get_real_range_pairs()    # = r1
+            other_reals = other.get_real_range_pairs()  # = r2
+            self_ints = self.get_int_range_pairs()      # = i1
+            other_ints = other.get_int_range_pairs()    # = i2
+            # (self) n (other)
+            # = (r1 u i1) n (r2 u i2)
+            # = (r1 n (r2 u i2)) u (i1 n (r2 u i2))
+            # = (r1 n r2) u (r1 n i2) u (i1 n r2) u (i1 n i2)
+            # => reals = (r1 n r2),
+            #    ints = (r1 n i2) u (i1 n r2) u (i1 n i2)
+            intersect_reals = self._intersect_range_pairs(self_reals, other_reals)
+            intersect_real_ls = sorted([x[0] for x in intersect_reals] + [x[1] for x in intersect_reals])
+            intersect_ints = self._union_range_pairs(self._intersect_range_pairs(self_ints, other_reals) +
+                                                     self._intersect_range_pairs(self_reals, other_ints) +
+                                                     self._intersect_range_pairs(self_ints, other_ints))
+            intersect_int_ls = sorted([x[0] for x in intersect_ints] + [x[1] for x in intersect_ints])
+            return RangesSetPy(intersect_real_ls, intersect_int_ls)
+        elif self.is_finite():
+            # other must be finite set
+            return FiniteSetPy([x for x in self.elems() if x in other])
+        else:
+            return FiniteSetPy([x for x in other.elems() if x in self])
+
+    def _intersect_range_pairs(self, pairs1, pairs2):
+        """
+        Take two lists of disjoint range pairs and return their intersect as a continuous list of endpoints.
+        """
+        new_range_pairs = []
+        for p1 in pairs1:
+            # Iterate over all pairs, remove them and make intersects
+            p1_intersect_pairs = []
+            for p2 in pairs2:
+                # Get intersects with non-disjoint pairs to p1
+                if (p1[0] <= p2[0] <= p1[1]) or (p1[0] <= p2[1] <= p1[1]):
+                    if p1[0] <= p2[0] <= p1[1] and p1[0] <= p2[1] <= p1[1]:
+                        p1_intersect_pairs.append(p2)
+                    elif p1[0] <= p2[0] <= p1[1]:
+                        p1_intersect_pairs.append((p2[0], p1[1]))
+                    elif p1[0] <= p2[1] <= p1[1]:
+                        p1_intersect_pairs.append((p1[0], p2[1]))
+            # Replace old removed range, ignore resulting ranges if already in range pairs
+            new_range_pairs.extend(p1_intersect_pairs)
+            new_range_pairs = sorted(new_range_pairs, key=lambda p: p[0])
+        return new_range_pairs
 
     def difference(self, other):
         # TODO
