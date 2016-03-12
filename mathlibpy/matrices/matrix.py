@@ -3,13 +3,25 @@ import copy
 
 
 class Matrix(object):
+    """
+    Generic m*n matrix.
+    """
 
-    def __init__(self, rows, cols, body = None):
+    def __init__(self, rows, cols, body=None):
+        """
+        @note: Provision of number of rows and columns will soon be deprecated.
+        @type rows: int
+        @param rows: Number of rows in matrix.
+        @type cols: int
+        @param cols: Number of columns in matrix.
+        @type body: list
+        @param body: Matrix body as list of lists, each list being a matrix row.
+        """
         self.rows = rows
         self.cols = cols
         if not body:
             # Default is all 0's
-            self.body = [[0 for x in range(cols)] for y in range(rows)]
+            self.body = [[0 for _ in range(cols)] for _ in range(rows)]
         else:
             if not isinstance(body, list):
                 raise TypeError("body must be list row lists")
@@ -42,15 +54,21 @@ class Matrix(object):
 
     @property
     def body(self):
+        """
+        @note: This will soon be deprecated in favor of __getitem__ on tuples.
+        """
         return self._body
 
     @body.setter
     def body(self, b):
+        """
+        @note: This will soon be deprecated in favor of __setitem__ on tuples.
+        """
         if not isinstance(b, list):
             raise TypeError("body must be a list")
         elif not all(isinstance(b[i], list) for i in range(len(b))):
             raise TypeError("elements of body must be lists")
-        elif not all(len(b[0])== len(b[i]) for i in range(len(b))):
+        elif not all(len(b[0]) == len(b[i]) for i in range(len(b))):
             raise TypeError("all rows must be of same length")
         else:
             self.rows = len(b)
@@ -58,6 +76,13 @@ class Matrix(object):
             self._body = b
 
     def __str__(self):
+        """
+        Creates string of following form:
+
+        [elem11 elem12 elem13 ...]
+        [elem21 elem22 elem23 ...]
+        ...
+        """
         return "\n".join("[" + " ".join(str(i) for i in row) + "]" for row in self.body)
 
     def __eq__(self, other):
@@ -77,25 +102,36 @@ class Matrix(object):
                                              for r in range(self.rows)])
 
     def __mul__(self, other):
+        """
+        Can multiply with scalar or Matrix.
+        """
         if isinstance(other, type(self.body[0][0])):
-            return self.mul_scalar(other)
+            return self._mul_scalar(other)
         elif isinstance(other, Matrix):
-            return self.mul_matrix(other)
+            return self._mul_matrix(other)
         else:
             raise TypeError("Can only multiply matrix with scalar or another matrix")
 
     @staticmethod
     def identity(cols):
+        """
+        Create a square identity matrix of a certain number of columns.
+
+        @type cols: int
+        @param cols: Number of columns of produced identity matrix.
+        @rtype: Matrix
+        @return: The identity matrix of prescribed number of columns.
+        """
         return Matrix(cols, cols, [[1 if r == c else 0 for c in range(cols)]
                                    for r in range(cols)])
 
-    def mul_scalar(self, other):
+    def _mul_scalar(self, other):
         return Matrix(self.rows,
                       self.cols,
                       [[self.body[r][c]*other for c in range(self.cols)]
                        for r in range(self.rows)])
 
-    def mul_matrix(self, other):
+    def _mul_matrix(self, other):
         # Assume that 'other' is a matrix, as tested in __mul__
         if self.cols != other.rows:
             raise ValueError("Matrix 1 must have same number of columns as rows of matrix 2")
@@ -115,6 +151,16 @@ class Matrix(object):
         return self + (other*(-1))
 
     def get_cofactor(self, i, j):
+        """
+        Get cofactor matrix from row i and column j.
+
+        @type i: int
+        @param i: Row to eliminate in matrix
+        @type j: int
+        @param j: Column to eliminate in matrix
+        @rtype: Matrix
+        @return: Matrix without row i and column j.
+        """
         if not (isinstance(i, int) and isinstance(j, int)):
             raise ValueError("Coordinates must be integers")
         elif not (0 <= i <= (self.rows-1) and 0 <= j <= (self.cols-1)):
@@ -123,6 +169,10 @@ class Matrix(object):
         return Matrix(self.rows-1, self.cols-1, result)
 
     def get_determinant(self):
+        """
+        @rtype: float
+        @return: Scalar determinant of matrix.
+        """
         if self.rows != self.cols:
             raise ValueError("Cannot take determinant of non-square matrix")
         elif self.rows == 1 and self.cols == 1:
@@ -131,12 +181,25 @@ class Matrix(object):
             return sum(((-1)**c)*(self.body[0][c]*self.get_cofactor(0, c).get_determinant()) for c in range(self.cols))
 
     def transpose(self):
+        """
+        Transpose matrix in place.
+
+        @return: Nothing.
+        """
         self.body = [[self.body[c][r] for c in self.cols] for r in self.rows]
 
     def is_invertible(self):
+        """
+        @rtype: bool
+        @return: True if is an invertible matrix, False otherwise.
+        """
         return (self.rows == self.cols) and (self.get_determinant() != 0)
 
     def get_echelon_form(self):
+        """
+        @rtype: Matrix
+        @return: Matrix that is echelon form of current one.
+        """
         # Uses simplified version of Gauss-Jordan algorithm.
         result = copy.deepcopy(self)
         pivot_col = 0
@@ -162,6 +225,10 @@ class Matrix(object):
         return result
 
     def get_reduced_echelon_form(self):
+        """
+        @rtype: Matrix
+        @return: Matrix that is reduced echelon form of current one.
+        """
         result = self.get_echelon_form()
         # Go up rows in reverse
         for pivot_row in range(self.rows-1, -1, -1):
@@ -176,6 +243,10 @@ class Matrix(object):
         return result
 
     def get_row_reduced_echelon_form(self):
+        """
+        @rtype: Matrix
+        @return: Matrix that is row reduced echelon form of current one.
+        """
         result = self.get_reduced_echelon_form()
         for row in range(result.rows):
             pivot = next(x for x in result.body[row] if x != 0)
@@ -183,6 +254,11 @@ class Matrix(object):
         return result
 
     def get_inverse(self):
+        """
+        @raise ValueError: Matrix is not invertible.
+        @rtype: Matrix
+        @return: Matrix B such that self*B = B*self = Matrix.Identity(self.cols).
+        """
         if not self.is_invertible():
             raise ValueError("Matrix is not invertible")
         temp_self = copy.deepcopy(self)
