@@ -5,8 +5,12 @@ import math
 
 
 class Exp(function.Function):
+    """
+    Exponential function.
+    """
 
     def _evaluate(self, x):
+        # TODO: Compute this via Maclaurin series
         return math.e ** x
 
     def get_derivative(self):
@@ -17,10 +21,19 @@ class Exp(function.Function):
 
 
 class Power(function.Function):
+    """
+    Adjustment of Exp for general powers of functions to functions.
+    """
 
     def __init__(self, f1, f2):
-        self.f1 = f1
-        self.f2 = f2
+        if isinstance(f1, function.Function):
+            self.f1 = f1
+        elif isinstance(f1, numbers.Number):
+            self.f1 = function.Constant(f1)
+        if isinstance(f2, function.Function):
+            self.f2 = f2
+        elif isinstance(f2, numbers.Number):
+            self.f2 = function.Constant(f2)
         self.exp = Exp()
         self.log = Log()
 
@@ -37,6 +50,9 @@ class Power(function.Function):
 
 
 class Log(function.Function):
+    """
+    Natural logarithm.
+    """
 
     def _evaluate(self, x):
         return math.log(x)
@@ -49,6 +65,9 @@ class Log(function.Function):
 
 
 class LogBase(function.Function):
+    """
+    Adjustment of Log to accommodate arbitrary bases.
+    """
 
     def __init__(self, b):
         self.log = Log()
