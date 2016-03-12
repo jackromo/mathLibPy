@@ -8,6 +8,10 @@ It's a work in progress, but if you're interested in contributing, feel free to 
 
 MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
 
+## Requirements
+
+This library uses Python 2.7x, along with Epydoc for documentation.
+
 ## Features
 
 * Matrices
