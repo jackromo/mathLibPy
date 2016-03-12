@@ -4,17 +4,17 @@ import numbers
 
 class Function(object):
     """
-    Abstract class for all functions composed of elementary cts diff'ble ones.
-    Functions are composed of parse trees, with leaf nodes being elementary functions.
-    The tree includes arithmetic and compositional combinations of inner functions.
+    Abstract class for all functions composed of elementary continuous differentiable ones.
     """
 
     __metaclass__ = abc.ABCMeta
 
     def __call__(self, x):
         """
-        If x is a number, return f(x).
-        If x is a function, return self composed with x.
+        @type x: Function, Number
+        @param x: Either number from domain fed into self, or function to compose with self.
+        @rtype: Function if x is Function, Number otherwise
+        @return: Self composed with x if x is Function, self applied to x if x is Number
         """
         if isinstance(x, numbers.Number):
             return self._evaluate(x)
@@ -28,24 +28,51 @@ class Function(object):
         """
         Take a number x, and return f(x).
         Input x is guaranteed to be a Number.
+
+        @type x: Number
+        @param x: Value to be mapped by self to result.
         """
 
     def __add__(self, other):
+        """
+        @type other: Function
+        @param other: A Function to be combined with self by addition.
+        @rtype: Function
+        @return: Self combined with another Function by addition.
+        """
         if not isinstance(other, Function):
             raise TypeError("Other must be of type Function")
         return FunctionAddNode(self, other)
 
     def __sub__(self, other):
+        """
+        @type other: Function
+        @param other: A Function to be combined with self by subtraction.
+        @rtype: Function
+        @return: Self combined with another Function by subtraction.
+        """
         if not isinstance(other, Function):
             raise TypeError("Other must be of type Function")
         return FunctionSubNode(self, other)
 
     def __mul__(self, other):
+        """
+        @type other: Function
+        @param other: A Function to be combined with self by multiplication.
+        @rtype: Function
+        @return: Self combined with another Function by multiplication.
+        """
         if not isinstance(other, Function):
             raise TypeError("Other must be of type Function")
         return FunctionMulNode(self, other)
 
     def __div__(self, other):
+        """
+        @type other: Function
+        @param other: A Function to be combined with self by division.
+        @rtype: Function
+        @return: Self combined with another Function by division.
+        """
         if not isinstance(other, Function):
             raise TypeError("Other must be of type Function")
         return FunctionDivNode(self, other)
@@ -53,20 +80,23 @@ class Function(object):
     @abc.abstractmethod
     def __eq__(self, other):
         """
-        Currently checks for exact equivalences between functions.
+        @bug: Currently checks for exact equivalences between functions. Requires intelligent search for identities.
         """
 
     @abc.abstractmethod
     def get_derivative(self):
         """
         Return own derivative as a function.
+
+        @rtype: Function
+        @return: A function that, for input x, gets own gradient at (x, f(x)).
         """
 
 
 class FunctionBinaryTreeNode(Function):
     """
     Abstract node of function parse tree for combination of two functions.
-    Concrete subclasses are functions themselves, and can be evaluated.
+    Concrete subclasses are functions themselves, and can be evaluated, derived, etc.
     """
 
     __metaclass__ = abc.ABCMeta
