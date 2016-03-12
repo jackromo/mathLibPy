@@ -74,6 +74,12 @@ This library uses Python 2.7x, along with Epydoc for documentation.
         * Parse strings of logical statements
         * Generate truth tables
         * Generate proofs and counter examples
+    * Automata and Languages
+        * Finite State Automata
+            * Nondeterministic and deterministic
+        * Pushdown Automata
+        * Grammars
+        * Conversion between automata types, minimization, equality tests
 * Abstract algebra
     * Groups (finite)
         * Test if set is group under operator
