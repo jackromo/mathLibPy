@@ -1,22 +1,19 @@
 import numbers
 
 
-class Infinity(object):
+class Infinity(numbers.Number):
 
     def __init__(self, rank, grp_id):
-        # Rank defines partial ordering of infinities
-        # Sign of rank also determines sign of infinity
         self.rank = rank
-        # Only infinities with same group ID (grp_id) are comparable
         self.grp_id = grp_id
 
     def __lt__(self, other):
-        if isinstance(other, numbers.Number):
-            return self.rank < 0
-        elif isinstance(other, Infinity):
+        if isinstance(other, Infinity):
             return self.grp_id == other.grp_id and self.rank < other.rank
+        elif isinstance(other, numbers.Number):
+            return self.rank < 0
         else:
-            raise TypeError("Not comparable with non-number or infinity")
+            raise TypeError("Not comparable with non-number")
 
     def __eq__(self, other):
         if not isinstance(other, Infinity):
@@ -24,58 +21,58 @@ class Infinity(object):
         return self.grp_id == other.grp_id and self.rank == other.rank
 
     def __gt__(self, other):
-        if isinstance(other, numbers.Number):
-            return self.rank >= 0
-        elif isinstance(other, Infinity):
+        if isinstance(other, Infinity):
             return self.grp_id == other.grp_id and self.rank > other.rank
+        elif isinstance(other, numbers.Number):
+            return self.rank >= 0
         else:
-            raise TypeError("Not comparable with non-number or infinity")
+            raise TypeError("Not comparable with non-number")
 
     def __neg__(self):
         return Infinity(-self.rank, self.grp_id)
 
     def __add__(self, other):
-        if isinstance(other, numbers.Number):
-            return self
-        elif isinstance(other, Infinity):
+        if isinstance(other, Infinity):
             if other.grp_id == self.grp_id:
                 return max(self, other)
             else:
                 return self
-        else:
-            raise TypeError("Not composable with non-number or infinity")
-
-    def __sub__(self, other):
-        if isinstance(other, numbers.Number) or isinstance(other, Infinity):
+        elif isinstance(other, numbers.Number):
             return self
         else:
-            raise TypeError("Not composable with non-number or infinity")
+            raise TypeError("Not composable with non-number")
+
+    def __sub__(self, other):
+        if isinstance(other, numbers.Number):
+            return self
+        else:
+            raise TypeError("Not composable with non-number")
 
     def __mul__(self, other):
-        if isinstance(other, numbers.Number):
+        if isinstance(other, Infinity):
+            return Infinity(self.rank * (other.rank / float(abs(other.rank))), self.grp_id)
+        elif isinstance(other, numbers.Number):
             if other == 0:
                 return 0
             elif (other / float(abs(other))) != (self.rank / float(abs(self.rank))):
                 return -self
             else:
                 return self
-        elif isinstance(other, Infinity):
-            return Infinity(self.rank * (other.rank / float(abs(other.rank))), self.grp_id)
         else:
-            raise TypeError("Not composable with non-number or infinity")
+            raise TypeError("Not composable with non-number")
 
     def __div__(self, other):
-        if isinstance(other, numbers.Number):
+        if isinstance(other, Infinity):
+            return Infinity(self.rank * (other.rank / float(abs(other.rank))), self.grp_id)
+        elif isinstance(other, numbers.Number):
             if other == 0:
                 raise ZeroDivisionError()
             elif (other / float(abs(other))) != (self.rank / float(abs(self.rank))):
                 return -self
             else:
                 return self
-        elif isinstance(other, Infinity):
-            return Infinity(self.rank * (other.rank / float(abs(other.rank))), self.grp_id)
         else:
-            raise TypeError("Not composable with non-number or infinity")
+            raise TypeError("Not composable with non-number")
 
 
 INFINITY = Infinity(1, 0)
