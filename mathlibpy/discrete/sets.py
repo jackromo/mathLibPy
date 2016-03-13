@@ -1,5 +1,4 @@
 import abc
-import numbers
 import math
 import copy
 from mathlibpy.constants import *
@@ -7,7 +6,7 @@ from mathlibpy.constants import *
 
 class SetPy(object):
     """
-    A collection of arbitrary entities.
+    A collection of arbitrary unordered entities.
     """
 
     __metaclass__ = abc.ABCMeta
@@ -16,57 +15,127 @@ class SetPy(object):
     def __contains__(self, item):
         """
         Check if contains item.
+
+        @type item: Any
+        @param item: Item to be checked for presence in self.
+        @rtype: bool
+        @return: True if item in self, False otherwise.
         """
 
     @abc.abstractmethod
     def cardinality(self):
         """
         Return number of items in set.
+
+        @rtype: number (int if finite, Infinity otherwise)
+        @return: Number of elements in set.
         """
 
     @abc.abstractmethod
     def is_finite(self):
         """
         Return whether has a finite number of elements.
+
+        @rtype: bool
+        @return: True if set is finite, False otherwise.
         """
 
     @abc.abstractmethod
     def elems(self):
         """
         If finite, return all elements. If not, raise an exception.
+
+        @rtype: list
+        @return: List of all elements in set.
+        @raise Exception: Set is infinite, so all elements cannot be captured in a list.
         """
 
     def union(self, other):
+        """
+        Get set of self unioned with other set.
+
+        @type other: SetPy
+        @param other: Set to union self with.
+        @rtype: SetPy
+        @return: Set of all elements either in self or other.
+        """
         if not isinstance(other, SetPy):
             raise TypeError("Can only union with another SetPy")
         return SetPyUnionNode(self, other)
 
     def difference(self, other):
+        """
+        Get set of elements in self but not in other.
+
+        @type other: SetPy
+        @param other: Set to make difference with.
+        @rtype: SetPy
+        @return: Set of elements in self but not in other.
+        """
         if not isinstance(other, SetPy):
             raise TypeError("Can only take difference with another SetPy")
         return SetPyDifferenceNode(self, other)
 
     def intersect(self, other):
+        """
+        Get intersect of self and other.
+
+        @type other: SetPy
+        @param other: Set to get intersect with.
+        @rtype: SetPy
+        @return: Set of elements both in self and other.
+        """
         if not isinstance(other, SetPy):
             raise TypeError("Can only intersect with another SetPy")
         return SetPyIntersectNode(self, other)
 
     def is_disjoint(self, other):
+        """
+        Check if both sets are disjoint.
+
+        @type other: SetPy
+        @param other: Set to compare with self.
+        @rtype: bool
+        @return: True if no elements in self are in other, False otherwise.
+        """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be disjoint with another SetPy")
         return self.intersect(other).cardinality() == 0
 
     def is_subset(self, other):
+        """
+        Check whether self is subset of other.
+
+        @type other: SetPy
+        @param other: Set being checked if self is subset of.
+        @rtype: bool
+        @return: True if all elements in self are in other, False otherwise.
+        """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be subset of another SetPy")
         return self.intersect(other).cardinality() == self.cardinality()
 
     def __eq__(self, other):
+        """
+        Check whether sets are exactly equal.
+
+        @type other: Any
+        @rtype: bool
+        @return: True if other is SetPy and both sets are subsets of each other, False otherwise.
+        """
         if not isinstance(other, SetPy):
             return False
         return self.is_subset(other) and other.is_subset(self)
 
     def is_proper_subset(self, other):
+        """
+        Check whether self is proper subset of other.
+
+        @type other: SetPy
+        @param other: Set being checked against.
+        @rtype: bool
+        @return: True if all elements in self are elements in other and not vice versa, False otherwise.
+        """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be proper subset of another SetPy")
         return self.is_subset(other) and (self is not other)
@@ -89,6 +158,7 @@ class SetPyTreeNode(SetPy):
 
 
 class SetPyUnionNode(SetPyTreeNode):
+    # TODO: alter this to only union RangesSetPy and FiniteSetPy
 
     def __contains__(self, item):
         return (item in self.s1) or (item in self.s2)
@@ -112,6 +182,7 @@ class SetPyUnionNode(SetPyTreeNode):
 
 
 class SetPyIntersectNode(SetPyTreeNode):
+    # TODO: Deprecate this, override intersect directly in all types of SetPy
 
     def __contains__(self, item):
         return (item in self.s1) and (item in self.s2)
@@ -139,6 +210,7 @@ class SetPyIntersectNode(SetPyTreeNode):
 
 
 class SetPyDifferenceNode(SetPyTreeNode):
+    # TODO: Deprecate this, override difference directly in all types of SetPy
 
     def __contains__(self, item):
         return (item in self.s1) and (item not in self.s2)
@@ -163,7 +235,7 @@ class SetPyDifferenceNode(SetPyTreeNode):
 
 class FiniteSetPy(SetPy):
     """
-    A set defined by a predetermined list of items rather than a range
+    A set defined by a predetermined list of items rather than a range.
     """
 
     def __init__(self, elems=None):
@@ -402,18 +474,27 @@ class RangesSetPy(SetPy):
 
 
 class RealSetPy(object):
+    """
+    The set of all rational and irrational numbers.
+    """
 
     def __new__(cls):
         return RangesSetPy([NEG_INF, INFINITY], [])
 
 
 class IntegerSetPy(object):
+    """
+    The set of all integers, regardless of sign.
+    """
 
     def __new__(cls):
         return RangesSetPy([], [NEG_INF, INFINITY])
 
 
 class NaturalSetPy(object):
+    """
+    The set of all non-negative integers.
+    """
 
     def __new__(cls):
         return RangesSetPy([], [0, INFINITY])
