@@ -3,8 +3,12 @@ import math
 
 
 class Sin(function.Function):
+    """
+    Wrapper class for sine function.
+    """
 
     def _evaluate(self, x):
+        # TODO: implement this as Maclaurin series
         return math.sin(x)
 
     def get_derivative(self):
@@ -15,8 +19,12 @@ class Sin(function.Function):
 
 
 class Cos(function.Function):
+    """
+    Wrapper class for cosine function.
+    """
 
     def _evaluate(self, x):
+        # TODO: implement this as Maclaurin series
         return math.cos(x)
 
     def get_derivative(self):
@@ -27,6 +35,9 @@ class Cos(function.Function):
 
 
 class Tan(function.Function):
+    """
+    Wrapper class for tangent function.
+    """
 
     def _evaluate(self, x):
         sin = Sin()
