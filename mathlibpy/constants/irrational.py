@@ -10,6 +10,10 @@ class IrrationalNumber(numbers.Number):
     TEST_ACCURACY = 10     # number of decimal places needed to be equal for 2 irrational numbers to be equal
 
     def __init__(self, val):
+        """
+        @type val: number
+        @param val: Implicit value of irrational number for comparison and arithmetic.
+        """
         if not (isinstance(val, int) or isinstance(val, float)):
             raise TypeError("Irrational number requires base Number value")
         self.val = val
@@ -41,6 +45,11 @@ class IrrationalNumber(numbers.Number):
         return int(round(self.val, 0))
 
     def __add__(self, other):
+        """
+        @rtype: IrrationalNumber
+        @return: IrrationalNumber with val equal to own val plus other if other is rational.
+        Otherwise, return IrrationalNumber with val equal to own val plus other val.
+        """
         if isinstance(other, int) or isinstance(other, float):
             return IrrationalNumber(self.val + other)
         elif isinstance(other, IrrationalNumber):
@@ -49,6 +58,11 @@ class IrrationalNumber(numbers.Number):
             return self.val + other
 
     def __sub__(self, other):
+        """
+        @rtype: IrrationalNumber
+        @return: IrrationalNumber with val equal to own val minus other if other is rational.
+        Otherwise, return IrrationalNumber with val equal to own val minus other val.
+        """
         if isinstance(other, int) or isinstance(other, float):
             return IrrationalNumber(self.val - other)
         elif isinstance(other, IrrationalNumber):
@@ -60,6 +74,11 @@ class IrrationalNumber(numbers.Number):
         return IrrationalNumber(-self.val)
 
     def __mul__(self, other):
+        """
+        @rtype: IrrationalNumber or int
+        @return: IrrationalNumber with val equal to own val times other if other is rational.
+        If other is zero, return 0. Otherwise, return IrrationalNumber with val equal to own val times other val.
+        """
         if isinstance(other, int) or isinstance(other, float):
             return 0 if other == 0 else IrrationalNumber(self.val * other)
         elif isinstance(other, IrrationalNumber):
@@ -68,6 +87,11 @@ class IrrationalNumber(numbers.Number):
             return self.val * other
 
     def __div__(self, other):
+        """
+        @rtype: IrrationalNumber
+        @return: IrrationalNumber with val equal to own val minus other if other is rational.
+        Otherwise, return IrrationalNumber with val equal to own val minus other val.
+        """
         if isinstance(other, int) or isinstance(other, float):
             if other == 0:
                 raise ZeroDivisionError()
@@ -78,6 +102,11 @@ class IrrationalNumber(numbers.Number):
             return self.val / float(other)
 
     def __pow__(self, power):
+        """
+        @rtype: IrrationalNumber
+        @return: IrrationalNumber with val equal to own val to the power of other other if other is rational.
+        Otherwise, return IrrationalNumber with val equal to own val to the power of other val.
+        """
         if isinstance(power, int) or isinstance(power, float):
             if power == 0:
                 return 1
