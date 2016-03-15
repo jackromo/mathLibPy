@@ -12,6 +12,16 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
 
 This library uses Python 2.7x, along with Epydoc for documentation.
 
+## Installation
+
+To install mathLibPy, clone the repository, navigate to the project's root directory and enter
+
+```bash
+python setup.py install
+```
+
+into the command prompt. Please ensure that python is on your PATH before doing this.
+
 ## Features
 
 * Matrices
