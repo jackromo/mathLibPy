@@ -2,8 +2,8 @@
 
 ## General
 
-* Convert docs to Sphinx
-* Finish RangesSetPy
+* Improve Sphinx documentation
+* Overload RangesSetPy's difference() method
 
 ## Future features
 
