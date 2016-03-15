@@ -1,3 +1,11 @@
+"""
+.. module:: exp
+    :synopsis: All exponential, power and logarithmic functions.
+
+.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+"""
+
+
 import function
 import polynomial
 import numbers
@@ -10,7 +18,7 @@ class Exp(function.Function):
     """
 
     def _evaluate(self, x):
-        # TODO: Compute this via Maclaurin series
+        # TODO: Compute this via Maclaurin series or use constants.E
         return math.e ** x
 
     def get_derivative(self):

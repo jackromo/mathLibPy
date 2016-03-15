@@ -1,3 +1,11 @@
+"""
+.. module:: trig
+    :synopsis: Sin, Cos and Tan classes.
+
+.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+"""
+
+
 import function
 import math
 

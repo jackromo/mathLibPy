@@ -1,3 +1,11 @@
+"""
+.. module:: function
+    :synopsis: Function class and all FunctionBinaryTreeNode subclasses.
+
+.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+"""
+
+
 import abc
 import numbers
 
@@ -11,10 +19,10 @@ class Function(object):
 
     def __call__(self, x):
         """
-        @type x: Function, Number
-        @param x: Either number from domain fed into self, or function to compose with self.
-        @rtype: Function if x is Function, Number otherwise
-        @return: Self composed with x if x is Function, self applied to x if x is Number
+        :type x: Function, Number
+        :param x: Either number from domain fed into self, or function to compose with self.
+        :rtype: Function if x is Function, Number otherwise
+        :return: Self composed with x if x is Function, self applied to x if x is Number
         """
         if isinstance(x, numbers.Number):
             return self._evaluate(x)
@@ -35,10 +43,10 @@ class Function(object):
 
     def __add__(self, other):
         """
-        @type other: Function
-        @param other: A Function to be combined with self by addition.
-        @rtype: Function
-        @return: Self combined with another Function by addition.
+        :type other: Function
+        :param other: A Function to be combined with self by addition.
+        :rtype: Function
+        :return: Self combined with another Function by addition.
         """
         if not isinstance(other, Function):
             raise TypeError("Other must be of type Function")
@@ -46,10 +54,10 @@ class Function(object):
 
     def __sub__(self, other):
         """
-        @type other: Function
-        @param other: A Function to be combined with self by subtraction.
-        @rtype: Function
-        @return: Self combined with another Function by subtraction.
+        :type other: Function
+        :param other: A Function to be combined with self by subtraction.
+        :rtype: Function
+        :return: Self combined with another Function by subtraction.
         """
         if not isinstance(other, Function):
             raise TypeError("Other must be of type Function")
@@ -57,10 +65,10 @@ class Function(object):
 
     def __mul__(self, other):
         """
-        @type other: Function
-        @param other: A Function to be combined with self by multiplication.
-        @rtype: Function
-        @return: Self combined with another Function by multiplication.
+        :type other: Function
+        :param other: A Function to be combined with self by multiplication.
+        :rtype: Function
+        :return: Self combined with another Function by multiplication.
         """
         if not isinstance(other, Function):
             raise TypeError("Other must be of type Function")
@@ -68,10 +76,10 @@ class Function(object):
 
     def __div__(self, other):
         """
-        @type other: Function
-        @param other: A Function to be combined with self by division.
-        @rtype: Function
-        @return: Self combined with another Function by division.
+        :type other: Function
+        :param other: A Function to be combined with self by division.
+        :rtype: Function
+        :return: Self combined with another Function by division.
         """
         if not isinstance(other, Function):
             raise TypeError("Other must be of type Function")
@@ -80,7 +88,9 @@ class Function(object):
     @abc.abstractmethod
     def __eq__(self, other):
         """
-        @bug: Currently checks for exact equivalences between functions. Requires intelligent search for identities.
+        .. note ::
+
+            Currently checks for exact equivalences between functions. Requires intelligent search for identities.
         """
 
     @abc.abstractmethod
@@ -88,8 +98,8 @@ class Function(object):
         """
         Return own derivative as a function.
 
-        @rtype: Function
-        @return: A function that, for input x, gets own gradient at (x, f(x)).
+        :rtype: Function
+        :return: A function that, for input x, gets own gradient at (x, f(x)).
         """
 
 

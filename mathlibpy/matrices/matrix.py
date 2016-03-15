@@ -1,3 +1,10 @@
+"""
+.. module:: matrix
+    :synopsis: Matrix class.
+
+.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+"""
+
 from __future__ import division  # make division floating-point
 import copy
 
@@ -9,13 +16,16 @@ class Matrix(object):
 
     def __init__(self, rows, cols, body=None):
         """
-        @note: Provision of number of rows and columns will soon be deprecated.
-        @type rows: int
-        @param rows: Number of rows in matrix.
-        @type cols: int
-        @param cols: Number of columns in matrix.
-        @type body: list
-        @param body: Matrix body as list of lists, each list being a matrix row.
+        .. note::
+
+            Provision of number of rows and columns will soon be deprecated.
+
+        :type rows: int
+        :param rows: Number of rows in matrix.
+        :type cols: int
+        :param cols: Number of columns in matrix.
+        :type body: list
+        :param body: Matrix body as list of lists, each list being a matrix row.
         """
         self.rows = rows
         self.cols = cols
@@ -55,14 +65,18 @@ class Matrix(object):
     @property
     def body(self):
         """
-        @note: This will soon be deprecated in favor of __getitem__ on tuples.
+        .. note::
+
+            This will soon be deprecated in favor of __getitem__ on tuples.
         """
         return self._body
 
     @body.setter
     def body(self, b):
         """
-        @note: This will soon be deprecated in favor of __setitem__ on tuples.
+        .. note::
+
+            This will soon be deprecated in favor of __setitem__ on tuples.
         """
         if not isinstance(b, list):
             raise TypeError("body must be a list")
@@ -117,10 +131,10 @@ class Matrix(object):
         """
         Create a square identity matrix of a certain number of columns.
 
-        @type cols: int
-        @param cols: Number of columns of produced identity matrix.
-        @rtype: Matrix
-        @return: The identity matrix of prescribed number of columns.
+        :type cols: int
+        :param cols: Number of columns of produced identity matrix.
+        :rtype: Matrix
+        :return: The identity matrix of prescribed number of columns.
         """
         return Matrix(cols, cols, [[1 if r == c else 0 for c in range(cols)]
                                    for r in range(cols)])
@@ -154,12 +168,12 @@ class Matrix(object):
         """
         Get cofactor matrix from row i and column j.
 
-        @type i: int
-        @param i: Row to eliminate in matrix
-        @type j: int
-        @param j: Column to eliminate in matrix
-        @rtype: Matrix
-        @return: Matrix without row i and column j.
+        :type i: int
+        :param i: Row to eliminate in matrix
+        :type j: int
+        :param j: Column to eliminate in matrix
+        :rtype: Matrix
+        :return: Matrix without row i and column j.
         """
         if not (isinstance(i, int) and isinstance(j, int)):
             raise ValueError("Coordinates must be integers")
@@ -170,8 +184,8 @@ class Matrix(object):
 
     def get_determinant(self):
         """
-        @rtype: float
-        @return: Scalar determinant of matrix.
+        :rtype: float
+        :return: Scalar determinant of matrix.
         """
         if self.rows != self.cols:
             raise ValueError("Cannot take determinant of non-square matrix")
@@ -184,21 +198,21 @@ class Matrix(object):
         """
         Transpose matrix in place.
 
-        @return: Nothing.
+        :return: Nothing.
         """
         self.body = [[self.body[c][r] for c in self.cols] for r in self.rows]
 
     def is_invertible(self):
         """
-        @rtype: bool
-        @return: True if is an invertible matrix, False otherwise.
+        :rtype: bool
+        :return: True if is an invertible matrix, False otherwise.
         """
         return (self.rows == self.cols) and (self.get_determinant() != 0)
 
     def get_echelon_form(self):
         """
-        @rtype: Matrix
-        @return: Matrix that is echelon form of current one.
+        :rtype: Matrix
+        :return: Matrix that is echelon form of current one.
         """
         # Uses simplified version of Gauss-Jordan algorithm.
         result = copy.deepcopy(self)
@@ -226,8 +240,8 @@ class Matrix(object):
 
     def get_reduced_echelon_form(self):
         """
-        @rtype: Matrix
-        @return: Matrix that is reduced echelon form of current one.
+        :rtype: Matrix
+        :return: Matrix that is reduced echelon form of current one.
         """
         result = self.get_echelon_form()
         # Go up rows in reverse
@@ -244,8 +258,8 @@ class Matrix(object):
 
     def get_row_reduced_echelon_form(self):
         """
-        @rtype: Matrix
-        @return: Matrix that is row reduced echelon form of current one.
+        :rtype: Matrix
+        :return: Matrix that is row reduced echelon form of current one.
         """
         result = self.get_reduced_echelon_form()
         for row in range(result.rows):
@@ -255,9 +269,9 @@ class Matrix(object):
 
     def get_inverse(self):
         """
-        @raise ValueError: Matrix is not invertible.
-        @rtype: Matrix
-        @return: Matrix B such that self*B = B*self = Matrix.Identity(self.cols).
+        :raise: ValueError (matrix is not invertible)
+        :rtype: Matrix
+        :return: Matrix B such that self*B = B*self = Matrix.Identity(self.cols).
         """
         if not self.is_invertible():
             raise ValueError("Matrix is not invertible")

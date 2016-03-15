@@ -1,3 +1,11 @@
+"""
+.. module:: sets
+    :synopsis: SetPy and all its subclasses.
+
+.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+"""
+
+
 import abc
 import math
 import copy
@@ -16,10 +24,10 @@ class SetPy(object):
         """
         Check if contains item.
 
-        @type item: Any
-        @param item: Item to be checked for presence in self.
-        @rtype: bool
-        @return: True if item in self, False otherwise.
+        :type item: Any
+        :param item: Item to be checked for presence in self.
+        :rtype: bool
+        :return: True if item in self, False otherwise.
         """
 
     @abc.abstractmethod
@@ -27,8 +35,8 @@ class SetPy(object):
         """
         Return number of items in set.
 
-        @rtype: number (int if finite, Infinity otherwise)
-        @return: Number of elements in set.
+        :rtype: number (int if finite, Infinity otherwise)
+        :return: Number of elements in set.
         """
 
     @abc.abstractmethod
@@ -36,8 +44,8 @@ class SetPy(object):
         """
         Return whether has a finite number of elements.
 
-        @rtype: bool
-        @return: True if set is finite, False otherwise.
+        :rtype: bool
+        :return: True if set is finite, False otherwise.
         """
 
     @abc.abstractmethod
@@ -45,19 +53,19 @@ class SetPy(object):
         """
         If finite, return all elements. If not, raise an exception.
 
-        @rtype: list
-        @return: List of all elements in set.
-        @raise Exception: Set is infinite, so all elements cannot be captured in a list.
+        :rtype: list
+        :return: List of all elements in set.
+        :raise: Exception (Set is infinite, so all elements cannot be captured in a list)
         """
 
     def union(self, other):
         """
         Get set of self unioned with other set.
 
-        @type other: SetPy
-        @param other: Set to union self with.
-        @rtype: SetPy
-        @return: Set of all elements either in self or other.
+        :type other: SetPy
+        :param other: Set to union self with.
+        :rtype: SetPy
+        :return: Set of all elements either in self or other.
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only union with another SetPy")
@@ -67,10 +75,10 @@ class SetPy(object):
         """
         Get set of elements in self but not in other.
 
-        @type other: SetPy
-        @param other: Set to make difference with.
-        @rtype: SetPy
-        @return: Set of elements in self but not in other.
+        :type other: SetPy
+        :param other: Set to make difference with.
+        :rtype: SetPy
+        :return: Set of elements in self but not in other.
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only take difference with another SetPy")
@@ -80,10 +88,10 @@ class SetPy(object):
         """
         Get intersect of self and other.
 
-        @type other: SetPy
-        @param other: Set to get intersect with.
-        @rtype: SetPy
-        @return: Set of elements both in self and other.
+        :type other: SetPy
+        :param other: Set to get intersect with.
+        :rtype: SetPy
+        :return: Set of elements both in self and other.
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only intersect with another SetPy")
@@ -93,10 +101,10 @@ class SetPy(object):
         """
         Check if both sets are disjoint.
 
-        @type other: SetPy
-        @param other: Set to compare with self.
-        @rtype: bool
-        @return: True if no elements in self are in other, False otherwise.
+        :type other: SetPy
+        :param other: Set to compare with self.
+        :rtype: bool
+        :return: True if no elements in self are in other, False otherwise.
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be disjoint with another SetPy")
@@ -106,10 +114,10 @@ class SetPy(object):
         """
         Check whether self is subset of other.
 
-        @type other: SetPy
-        @param other: Set being checked if self is subset of.
-        @rtype: bool
-        @return: True if all elements in self are in other, False otherwise.
+        :type other: SetPy
+        :param other: Set being checked if self is subset of.
+        :rtype: bool
+        :return: True if all elements in self are in other, False otherwise.
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be subset of another SetPy")
@@ -119,9 +127,9 @@ class SetPy(object):
         """
         Check whether sets are exactly equal.
 
-        @type other: Any
-        @rtype: bool
-        @return: True if other is SetPy and both sets are subsets of each other, False otherwise.
+        :type other: Any
+        :rtype: bool
+        :return: True if other is SetPy and both sets are subsets of each other, False otherwise.
         """
         if not isinstance(other, SetPy):
             return False
@@ -131,10 +139,10 @@ class SetPy(object):
         """
         Check whether self is proper subset of other.
 
-        @type other: SetPy
-        @param other: Set being checked against.
-        @rtype: bool
-        @return: True if all elements in self are elements in other and not vice versa, False otherwise.
+        :type other: SetPy
+        :param other: Set being checked against.
+        :rtype: bool
+        :return: True if all elements in self are elements in other and not vice versa, False otherwise.
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be proper subset of another SetPy")

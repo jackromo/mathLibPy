@@ -1,18 +1,36 @@
+"""
+.. module:: irrational
+    :synopsis: IrrationalNumber class and all irrational constants.
+
+.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+
+"""
+
+
 import numbers
 
 
 class IrrationalNumber(numbers.Number):
     """
-    Irrational numbers must be a different type from floats, as all floats are rational.
-    (This is due to them all having finite decimal places.)
+    Wrapper class around a number to simulate it being irrational.
+
+    .. note::
+
+        Irrational numbers must be a different type from floats, as all floats are rational.
+        This is due to them all having finite decimal places.
+
+    .. warning ::
+
+        When working with a non-irrational number, IrrationalNumbers can only override the operator if they come first.
+        ie. PI + 1 works, but 1 + PI raises an error.
     """
 
     TEST_ACCURACY = 10     # number of decimal places needed to be equal for 2 irrational numbers to be equal
 
     def __init__(self, val):
         """
-        @type val: number
-        @param val: Implicit value of irrational number for comparison and arithmetic.
+        :type val: number
+        :param val: Implicit value of irrational number for comparison and arithmetic.
         """
         if not (isinstance(val, int) or isinstance(val, float)):
             raise TypeError("Irrational number requires base Number value")
@@ -46,8 +64,8 @@ class IrrationalNumber(numbers.Number):
 
     def __add__(self, other):
         """
-        @rtype: IrrationalNumber
-        @return: IrrationalNumber with val equal to own val plus other if other is rational.
+        :rtype: IrrationalNumber
+        :return: IrrationalNumber with val equal to own val plus other if other is rational.
         Otherwise, return IrrationalNumber with val equal to own val plus other val.
         """
         if isinstance(other, int) or isinstance(other, float):
@@ -59,8 +77,8 @@ class IrrationalNumber(numbers.Number):
 
     def __sub__(self, other):
         """
-        @rtype: IrrationalNumber
-        @return: IrrationalNumber with val equal to own val minus other if other is rational.
+        :rtype: IrrationalNumber
+        :return: IrrationalNumber with val equal to own val minus other if other is rational.
         Otherwise, return IrrationalNumber with val equal to own val minus other val.
         """
         if isinstance(other, int) or isinstance(other, float):
@@ -75,8 +93,8 @@ class IrrationalNumber(numbers.Number):
 
     def __mul__(self, other):
         """
-        @rtype: IrrationalNumber or int
-        @return: IrrationalNumber with val equal to own val times other if other is rational.
+        :rtype: IrrationalNumber or int
+        :return: IrrationalNumber with val equal to own val times other if other is rational.
         If other is zero, return 0. Otherwise, return IrrationalNumber with val equal to own val times other val.
         """
         if isinstance(other, int) or isinstance(other, float):
@@ -88,8 +106,8 @@ class IrrationalNumber(numbers.Number):
 
     def __div__(self, other):
         """
-        @rtype: IrrationalNumber
-        @return: IrrationalNumber with val equal to own val minus other if other is rational.
+        :rtype: IrrationalNumber
+        :return: IrrationalNumber with val equal to own val minus other if other is rational.
         Otherwise, return IrrationalNumber with val equal to own val minus other val.
         """
         if isinstance(other, int) or isinstance(other, float):
@@ -103,8 +121,8 @@ class IrrationalNumber(numbers.Number):
 
     def __pow__(self, power):
         """
-        @rtype: IrrationalNumber
-        @return: IrrationalNumber with val equal to own val to the power of other other if other is rational.
+        :rtype: IrrationalNumber
+        :return: IrrationalNumber with val equal to own val to the power of other other if other is rational.
         Otherwise, return IrrationalNumber with val equal to own val to the power of other val.
         """
         if isinstance(power, int) or isinstance(power, float):
@@ -117,7 +135,7 @@ class IrrationalNumber(numbers.Number):
             return self.val ** power
 
 
-# Irrational numbers
 PI = IrrationalNumber(3.14159265)
+"""Pi. Accurate to 9 significant figures."""
 E = IrrationalNumber(2.718281828)
-
+"""Constant 'e'. Accurate to 9 significant figures."""
