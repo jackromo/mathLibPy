@@ -52,9 +52,6 @@ into the command prompt. Please ensure that python is on your PATH before doing 
     * Generic sequence, takes any Function
 * Discrete math
     * Finite Sets
-    * Infinite sets
-        * Real, Integer and Natural number sets
-        * Sets of disjoint ranges (real and integer ranges)
     * Union, intersect, difference
     * Cardinality, subset, proper subset and equality tests
         * Returns different infinities for different infinite sets

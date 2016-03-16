@@ -3,7 +3,10 @@
 ## General
 
 * Improve Sphinx documentation
-* Overload RangesSetPy's difference() method
+* Finish SetPy and subclasses
+    * Finish SetPyCombinationFactory subclasses
+    * Create type hierarchy for all possible mathematical entities
+        * Use to generalize IntervalSetPy to outside of numbers
 
 ## Future features
 
