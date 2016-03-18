@@ -2,7 +2,7 @@
 This is largely deprecated. Do not use it as a metric for correctness.
 """
 
-from mathlibpy.discrete import *
+from mathlibpy.sets import *
 import unittest
 
 
