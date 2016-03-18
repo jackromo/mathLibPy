@@ -50,9 +50,11 @@ into the command prompt. Please ensure that python is on your PATH before doing 
 * Sequences
     * Arithmetic and Geometric sequences
     * Generic sequence, takes any Function
-* Discrete math
+* Sets (UNFINISHED)
     * Finite Sets
     * Union, intersect, difference
+    * Universe sets for different types (eg. universe of all numbers)
+    * Interval sets within ordered universe sets
     * Cardinality, subset, proper subset and equality tests
         * Returns different infinities for different infinite sets
 * Infinities
