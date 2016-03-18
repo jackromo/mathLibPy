@@ -9,6 +9,6 @@ Modules:
    :maxdepth: 2
 
    constants
-   discrete
+   sets
    functions
    matrices
