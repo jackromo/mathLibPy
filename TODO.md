@@ -5,8 +5,7 @@
 * Improve Sphinx documentation
 * Finish SetPy and subclasses
     * Finish SetPyCombinationFactory subclasses
-    * Create type hierarchy for all possible mathematical entities
-        * Use to generalize IntervalSetPy to outside of numbers
+    * Create tests for SetPy and subclasses
 
 ## Future features
 
