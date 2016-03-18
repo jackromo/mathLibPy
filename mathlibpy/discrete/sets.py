@@ -6,8 +6,10 @@
 """
 
 # NOTE: This module is unfinished; do not use it.
+# TODO: documentation
 
-
+import set_combinations
+import universes
 import abc
 from mathlibpy.constants import *
 
@@ -80,7 +82,7 @@ class SetPy(object):
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be disjoint with another SetPy")
-        return SetIntersect(self, other).cardinality() == 0
+        return set_combinations.SetIntersect(self, other).cardinality() == 0
 
     def __eq__(self, other):
         """
@@ -106,217 +108,6 @@ class SetPy(object):
         if not isinstance(other, SetPy):
             raise TypeError("Can only be proper subset of another SetPy")
         return self.is_subset(other) and not self == other
-
-
-class SetPyCombinationFactory(object):
-    # TODO: declare all combination cases.
-
-    __metaclass__ = abc.ABCMeta
-
-    def __new__(cls, set1, set2):
-        if isinstance(set1, FiniteSetPy):
-            if isinstance(set2, FiniteSetPy):
-                return cls._combine_finiteset_finiteset(set1, set2)
-            elif isinstance(set2, IntervalSetPy):
-                return cls._combine_finiteset_interval(set1, set2)
-            elif isinstance(set2, UniqueSetsUnionSetPy):
-                return cls._combine_finiteset_uniqueunion(set1, set2)
-            else:
-                raise TypeError("set2 not recognized type of set")
-        elif isinstance(set1, IntervalSetPy):
-            if isinstance(set2, FiniteSetPy):
-                return cls._combine_interval_finiteset(set1, set2)
-            elif isinstance(set2, IntervalSetPy):
-                return cls._combine_interval_interval(set1, set2)
-            elif isinstance(set2, UniqueSetsUnionSetPy):
-                return cls._combine_interval_uniqueunion(set1, set2)
-            else:
-                raise TypeError("set2 not recognized type of set")
-        elif isinstance(set1, UniqueSetsUnionSetPy):
-            if isinstance(set2, FiniteSetPy):
-                return cls._combine_uniqueunion_finiteset(set1, set2)
-            elif isinstance(set2, IntervalSetPy):
-                return cls._combine_uniqueunion_interval(set1, set2)
-            elif isinstance(set2, UniqueSetsUnionSetPy):
-                return cls._combine_uniqueunion_uniqueunion(set1, set2)
-            else:
-                raise TypeError("set2 not recognized type of set")
-        else:
-            raise TypeError("set1 not recognized type of set")
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_finiteset_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_finiteset_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_finiteset_uniqueunion(cls, set1, set2):
-        pass
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_interval_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_interval_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_interval_uniqueunion(cls, set1, set2):
-        pass
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_uniqueunion_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_uniqueunion_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    @abc.abstractmethod
-    def _combine_uniqueunion_uniqueunion(cls, set1, set2):
-        pass
-
-
-class SetUnion(SetPyCombinationFactory):
-    """
-    Set of elements either in self or in other.
-    """
-    # TODO
-
-    @classmethod
-    def _combine_finiteset_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_finiteset_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_finiteset_uniqueunion(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_uniqueunion(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_uniqueunion(cls, set1, set2):
-        pass
-
-
-class SetIntersect(SetPyCombinationFactory):
-    """
-    Set of elements both in self and in other.
-    """
-    # TODO
-
-    @classmethod
-    def _combine_finiteset_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_finiteset_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_finiteset_uniqueunion(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_uniqueunion(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_uniqueunion(cls, set1, set2):
-        pass
-
-
-class SetDifference(SetPyCombinationFactory):
-    """
-    Set of elements in self but not in other.
-    """
-    # TODO
-
-    @classmethod
-    def _combine_finiteset_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_finiteset_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_finiteset_uniqueunion(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_interval_uniqueunion(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_finiteset(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_interval(cls, set1, set2):
-        pass
-
-    @classmethod
-    def _combine_uniqueunion_uniqueunion(cls, set1, set2):
-        pass
 
 
 class FiniteSetPy(SetPy):
@@ -352,9 +143,11 @@ class IntervalSetPy(SetPy):
     """
     An interval from one point to another, within a universe of totally ordered entities.
     """
-    # TODO: currently only supports ints and reals, must generalize to all types
+    # TODO: documentation
 
     def __init__(self, range_type, lowest, highest):
+        if not isinstance(range_type, universes.TypeUniverseSet):
+            raise TypeError("Range_type must be a TypeUniverseSet")
         self.range_type = range_type
         self.lowest = lowest
         self.highest = highest
@@ -365,20 +158,17 @@ class IntervalSetPy(SetPy):
         return self.lowest < item < self.highest
 
     def cardinality(self):
-        if self.range_type == int:
-            if self.is_finite():
-                return max(self.highest - self.lowest - 1, 0)
+        if self.range_type.is_sparse():
+            if not (isinstance(self.lowest, Infinity) or isinstance(self.highest, Infinity)):
+                return len(self.elems())
             else:
-                return NAT_CARD
-        return REAL_CARD
+                return self.range_type.cardinality()
+        else:
+            # Assume cardinality of smaller range is same as total when not sparse (not always true)
+            return self.range_type.cardinality()
 
     def elems(self):
-        if self.is_finite():
-            if self.range_type == int:
-                if self.cardinality() == 0:
-                    return []
-                return range(self.lowest + 1, self.highest)
-        raise Exception("Set is infinite, cannot collect all elements in list")
+        return self.range_type.elems_in_range(self.lowest, self.highest)
 
     def is_subset(self, other):
         if self.is_finite():
@@ -386,14 +176,19 @@ class IntervalSetPy(SetPy):
         elif other.is_finite():
             return False
         elif isinstance(other, IntervalSetPy):
-            if self.range_type == other.range_type:
-                return other.lowest <= self.lowest and other.highest >= self.highest
-            elif self.range_type == int:
-                return other.lowest <= self.lowest and other.highest >= self.highest
-            elif self.range_type == numbers.Real:
+            if self.range_type.is_subset(other.range_type):
+                return self.lowest >= other.lowest and self.highest <= other.highest
+            else:
                 return False
+        elif isinstance(other, universes.UniverseIntersect):
+            return self.is_subset(other.set1) and self.is_subset(other.set2)
+        elif isinstance(other, universes.UniverseUnion):
+            return set_combinations.SetDifference(self, other.set2).is_subset(other.set1) and\
+                   set_combinations.SetDifference(self, other.set1).is_subset(other.set2)
+        elif isinstance(other, universes.UniverseDifference):
+            return self.is_subset(other.set1) and self.is_disjoint(other.set2)
         elif isinstance(other, UniqueSetsUnionSetPy):
-            return self.is_subset(SetIntersect(self, other))
+            return self.is_subset(set_combinations.SetIntersect(self, other))
 
 
 class UniqueSetsUnionSetPy(SetPy):
@@ -412,7 +207,7 @@ class UniqueSetsUnionSetPy(SetPy):
                 for j, s2 in enumerate(sets_ls[:i] + sets_ls[i+1:]):
                     if s1.is_disjoint(s2):
                         sets_ls.remove(s1)
-                        sets_ls.insert(i, SetDifference(s1, s2))
+                        sets_ls.insert(i, set_combinations.SetDifference(s1, s2))
                         changed_sets_ls = True
                         break
                 if changed_sets_ls:
