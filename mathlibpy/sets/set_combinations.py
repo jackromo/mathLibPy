@@ -1,8 +1,6 @@
 import sets
 import abc
 
-# TODO: documentation
-
 
 class SetPyCombinationFactory(object):
 
@@ -107,43 +105,48 @@ class SetUnion(SetPyCombinationFactory):
     """
     Set of elements either in self or in other.
     """
-    # TODO
 
     @classmethod
     def _combine_finiteset_finiteset(cls, set1, set2):
-        pass
+        return sets.FiniteSetPy(set1.elems() + set2.elems())
 
     @classmethod
     def _combine_finiteset_interval(cls, set1, set2):
-        pass
+        return sets.UniqueSetsUnionSetPy([set1, set2])
 
     @classmethod
     def _combine_finiteset_uniqueunion(cls, set1, set2):
-        pass
+        return sets.UniqueSetsUnionSetPy([set1] + set2.sets_ls)
 
     @classmethod
     def _combine_interval_finiteset(cls, set1, set2):
-        pass
+        return cls._combine_finiteset_interval(set1, set2)
 
     @classmethod
     def _combine_interval_interval(cls, set1, set2):
-        pass
+        if set1.is_subset(set2):
+            return set2
+        elif set2.is_subset(set1):
+            return set1
+        else:
+            set1_diff = SetDifference(set1, set2)
+            return sets.UniqueSetsUnionSetPy([set1_diff, set2])
 
     @classmethod
     def _combine_interval_uniqueunion(cls, set1, set2):
-        pass
+        return sets.UniqueSetsUnionSetPy([set1] + set2.sets_ls)
 
     @classmethod
     def _combine_uniqueunion_finiteset(cls, set1, set2):
-        pass
+        return cls._combine_finiteset_uniqueunion(set1, set2)
 
     @classmethod
     def _combine_uniqueunion_interval(cls, set1, set2):
-        pass
+        return cls._combine_interval_uniqueunion(set1, set2)
 
     @classmethod
     def _combine_uniqueunion_uniqueunion(cls, set1, set2):
-        pass
+        return sets.UniqueSetsUnionSetPy(set1.sets_ls + set2.sets_ls)
 
 
 class SetIntersect(SetPyCombinationFactory):

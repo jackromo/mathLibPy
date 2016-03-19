@@ -204,7 +204,7 @@ class UniqueSetsUnionSetPy(SetPy):
             changed_sets_ls = False
             for i, s1 in enumerate(sets_ls):
                 for j, s2 in enumerate(sets_ls[:i] + sets_ls[i+1:]):
-                    if s1.is_disjoint(s2):
+                    if not s1.is_disjoint(s2):
                         sets_ls.remove(s1)
                         sets_ls.insert(i, set_combinations.SetDifference(s1, s2))
                         changed_sets_ls = True
