@@ -2,8 +2,6 @@ import abc
 import numbers
 from mathlibpy.constants import *
 
-# TODO: documentation
-
 
 class TypeUniverseSet(object):
     """
@@ -42,6 +40,12 @@ class TypeUniverseSet(object):
     def cardinality(self):
         """
         Cardinality of set, including subsets.
+        """
+
+    @abc.abstractmethod
+    def is_subset(self, other):
+        """
+        True if is subset of other, False otherwise.
         """
 
 
@@ -243,6 +247,9 @@ class IntegerUniverse(PredefinedUniverse):
 
 
 class UniverseCombination(TypeUniverseSet):
+    """
+    Only required to support predefined universes for now.
+    """
 
     __metaclass__ = abc.ABCMeta
 
@@ -273,6 +280,9 @@ class UniverseIntersect(UniverseCombination):
         else:
             return 0
 
+    def is_subset(self, other):
+        return self.set1.is_subset(other) or self.set2.is_subset(other)
+
 
 class UniverseUnion(UniverseCombination):
 
@@ -302,6 +312,9 @@ class UniverseUnion(UniverseCombination):
         else:
             return self.set1.cardinality() + self.set2.cardinality()
 
+    def is_subset(self, other):
+        return self.set1.is_subset(other) and self.set2.is_subset(other)
+
 
 class UniverseDifference(UniverseCombination):
 
@@ -325,3 +338,6 @@ class UniverseDifference(UniverseCombination):
                                                           if not isinstance(s, type(self.set2)))
         else:
             return self.set1.cardinality()
+
+    def is_subset(self, other):
+        return self.set1.is_subset(other)
