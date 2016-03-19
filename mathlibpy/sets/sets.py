@@ -6,7 +6,6 @@
 """
 
 # NOTE: This module is unfinished; do not use it.
-# TODO: documentation
 
 import set_combinations
 import universes
@@ -235,7 +234,7 @@ class RealSetPy(object):
     """
 
     def __new__(cls):
-        return IntervalSetPy(numbers.Real, NEG_INF, INFINITY)
+        return IntervalSetPy(universes.RealNumberUniverse(), NEG_INF, INFINITY)
 
 
 class IntegerSetPy(object):
@@ -244,7 +243,7 @@ class IntegerSetPy(object):
     """
 
     def __new__(cls):
-        return IntervalSetPy(int, NEG_INF, INFINITY)
+        return IntervalSetPy(universes.IntegerUniverse(), NEG_INF, INFINITY)
 
 
 class NaturalSetPy(object):
@@ -253,4 +252,4 @@ class NaturalSetPy(object):
     """
 
     def __new__(cls):
-        return IntervalSetPy(int, 0, INFINITY)
+        return IntervalSetPy(universes.IntegerUniverse(), 0, INFINITY)
