@@ -153,43 +153,51 @@ class SetIntersect(SetPyCombinationFactory):
     """
     Set of elements both in self and in other.
     """
-    # TODO
 
     @classmethod
     def _combine_finiteset_finiteset(cls, set1, set2):
-        pass
+        return sets.FiniteSetPy([x for x in set1.elems() if x in set2])
 
     @classmethod
     def _combine_finiteset_interval(cls, set1, set2):
-        pass
+        return sets.FiniteSetPy([x for x in set1.elems() if x in set2])
 
     @classmethod
     def _combine_finiteset_uniqueunion(cls, set1, set2):
-        pass
+        return sets.FiniteSetPy([x for x in set1.elems() if x in set2])
 
     @classmethod
     def _combine_interval_finiteset(cls, set1, set2):
-        pass
+        return cls._combine_finiteset_interval(set1, set2)
 
     @classmethod
     def _combine_interval_interval(cls, set1, set2):
+        # TODO
         pass
 
     @classmethod
     def _combine_interval_uniqueunion(cls, set1, set2):
-        pass
+        return reduce(
+            lambda accum, new: SetUnion(accum, SetIntersect(set1, new)),
+            set2.sets_ls,
+            sets.FiniteSetPy([])
+        )
 
     @classmethod
     def _combine_uniqueunion_finiteset(cls, set1, set2):
-        pass
+        return cls._combine_finiteset_uniqueunion(set1, set2)
 
     @classmethod
     def _combine_uniqueunion_interval(cls, set1, set2):
-        pass
+        return cls._combine_interval_uniqueunion(set1, set2)
 
     @classmethod
     def _combine_uniqueunion_uniqueunion(cls, set1, set2):
-        pass
+        return reduce(
+            lambda accum, new: SetUnion(accum, SetIntersect(set2, new)),
+            set1.sets_ls,
+            sets.FiniteSetPy([])
+        )
 
 
 class SetDifference(SetPyCombinationFactory):
