@@ -204,40 +204,45 @@ class SetDifference(SetPyCombinationFactory):
     """
     Set of elements in self but not in other.
     """
-    # TODO
 
     @classmethod
     def _combine_finiteset_finiteset(cls, set1, set2):
-        pass
+        return sets.FiniteSetPy([x for x in set1.elems() if x not in set2])
 
     @classmethod
     def _combine_finiteset_interval(cls, set1, set2):
-        pass
+        return sets.FiniteSetPy([x for x in set1.elems() if x not in set2])
 
     @classmethod
     def _combine_finiteset_uniqueunion(cls, set1, set2):
-        pass
+        return sets.FiniteSetPy([x for x in set1.elems() if x not in set2])
 
     @classmethod
     def _combine_interval_finiteset(cls, set1, set2):
+        # TODO
         pass
 
     @classmethod
     def _combine_interval_interval(cls, set1, set2):
+        # TODO
         pass
 
     @classmethod
     def _combine_interval_uniqueunion(cls, set1, set2):
-        pass
+        return reduce(
+            lambda accum, new: SetDifference(accum, new),
+            set2.sets_ls,
+            set1
+        )
 
     @classmethod
     def _combine_uniqueunion_finiteset(cls, set1, set2):
-        pass
+        return sets.UniqueSetsUnionSetPy([SetDifference(x, set2) for x in set1.sets_ls])
 
     @classmethod
     def _combine_uniqueunion_interval(cls, set1, set2):
-        pass
+        return sets.UniqueSetsUnionSetPy([SetDifference(x, set2) for x in set1.sets_ls])
 
     @classmethod
     def _combine_uniqueunion_uniqueunion(cls, set1, set2):
-        pass
+        return sets.UniqueSetsUnionSetPy([SetDifference(x, set2) for x in set1.sets_ls])
