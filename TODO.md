@@ -12,6 +12,7 @@
 * Matrices
     * Eigenvectors and eigenvalues
     * Diagonalization
+    * Sparse and dense matrices
 * Functions
     * Intelligent function equality test (identities)
     * Find roots and fixed points
