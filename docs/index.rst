@@ -12,3 +12,4 @@ Modules:
    sets
    functions
    matrices
+   discrete
