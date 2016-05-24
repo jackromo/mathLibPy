@@ -1,6 +1,6 @@
 # MathLibPy
 
-This is a basic math library for Python.
+This is a math library for Python.
 
 It's a work in progress, but if you're interested in contributing, feel free to contact me at sharrackor@gmail.com.
 
