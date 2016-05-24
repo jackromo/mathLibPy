@@ -1,9 +1,7 @@
 """
-.. module:: infinity
-    :synopsis: Infinity class and all infinite constants.
+Infinity class and all infinite constants.
 
-.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
-
+Author: Jack Romo <sharrackor@gmail.com>
 """
 
 import numbers
@@ -15,31 +13,30 @@ class Infinity(numbers.Number):
     Infinities are comparable with each other, and are considered numbers.
     Thus, they support all comparison and arithmetic operations.
 
-    .. note ::
-
+    Notes:
         Infinities are not technically numbers, as they disobey arithmetic laws.
         For simplicity and consistency, they are considered to be numbers here.
 
-    .. warning ::
-
-        When working with another non-infinite number, Ininity can only override the operator if it comes first.
+    Warnings:
+        When working with another non-infinite number, Infinity can only override the operator if it comes first.
         ie. oo + 1 works, but 1 + oo raises an error.
     """
 
     def __init__(self, rank, grp_id):
         """
-        :type rank: int
-        :param rank: Defines ordering of infinity within its ordering group. Comparison compares ranks of infinities.
-        if rank is negative, then infinity is also negative.
-        :type grp_id: int
-        :param grp_id: ID of group of infinities that self can be meaningfully compared with.
+
+        Args:
+            rank (int): Defines ordering of infinity within its ordering group. Comparison compares ranks of infinities.
+                        If rank is negative, then infinity is also negative.
+            grp_id (int): ID of group of infinities that self can be meaningfully compared with.
         """
         self.rank = rank
         self.grp_id = grp_id
 
     def __lt__(self, other):
         """
-        :return: True if other is Infinity, has own grp_id and higher rank than self. False otherwise.
+        Returns:
+            bool: True if other is Infinity, has own grp_id and higher rank than self. False otherwise.
         """
         if isinstance(other, Infinity):
             return self.grp_id == other.grp_id and self.rank < other.rank
@@ -50,7 +47,8 @@ class Infinity(numbers.Number):
 
     def __eq__(self, other):
         """
-        :return: True if other is Infinity and has same grp_id and rank as self, False otherwise.
+        Returns:
+            bool: True if other is Infinity and has same grp_id and rank as self, False otherwise.
         """
         if not isinstance(other, Infinity):
             return False
@@ -58,7 +56,8 @@ class Infinity(numbers.Number):
 
     def __gt__(self, other):
         """
-        :return: True if other is Infinity, has own grp_id and lower rank than self. False otherwise.
+        Returns:
+            bool: True if other is Infinity, has own grp_id and lower rank than self. False otherwise.
         """
         if isinstance(other, Infinity):
             return self.grp_id == other.grp_id and self.rank > other.rank
@@ -69,14 +68,18 @@ class Infinity(numbers.Number):
 
     def __neg__(self):
         """
-        :return: Infinity with same grp_id and negative rank of self.
+        Returns:
+            bool: Infinity with same grp_id and negative rank of self.
         """
         return Infinity(-self.rank, self.grp_id)
 
     def __add__(self, other):
         """
-        :type other: number
-        :return: If other is an Infinity, return max of self and other. Otherwise, return self.
+        Args:
+            other (number): Number to be added to.
+
+        Returns:
+             number: If other is an Infinity, return max of self and other. Otherwise, return self.
         """
         if isinstance(other, Infinity):
             if other.grp_id == self.grp_id:
@@ -90,8 +93,11 @@ class Infinity(numbers.Number):
 
     def __sub__(self, other):
         """
-        :type other: number
-        :return: If other is a number, return self.
+        Args:
+            other (number): Number to subtract from self.
+
+        Returns:
+            bool: If other is a number, return self.
         """
         if isinstance(other, numbers.Number):
             return self
@@ -100,9 +106,12 @@ class Infinity(numbers.Number):
 
     def __mul__(self, other):
         """
-        :type other: number
-        :return: If other is an infinity, return negative self if other has opposite sign, else positive self.
-        Otherwise, return 0 if other is 0, or -self if other's sign is opposite to self.
+        Args:
+            other (number): Number to multiply by self.
+
+        Returns:
+             number: If other is an infinity, return negative self if other has opposite sign, else positive self.
+                    Otherwise, return 0 if other is 0, or -self if other's sign is opposite to self.
         """
         if isinstance(other, Infinity):
             return Infinity(self.rank * (other.rank / float(abs(other.rank))), self.grp_id)
@@ -118,9 +127,14 @@ class Infinity(numbers.Number):
 
     def __div__(self, other):
         """
-        :type other: number
-        :return: Self with opposite sign if own sign different from other sign.
-        :raise: ZeroDivisionError
+        Args:
+            other (number): Number to multiply by self.
+
+        Returns:
+            number: Self with opposite sign if own sign different from other sign.
+
+        Raises:
+             ZeroDivisionError
         """
         if isinstance(other, Infinity):
             return Infinity(self.rank * (other.rank / float(abs(other.rank))), self.grp_id)
