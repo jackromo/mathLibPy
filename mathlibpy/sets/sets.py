@@ -1,8 +1,7 @@
 """
-.. module:: sets
-    :synopsis: SetPy and all its subclasses.
+SetPy and all its subclasses.
 
-.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+Author: Jack Romo <sharrackor@gmail.com>
 """
 
 # NOTE: This module is unfinished; do not use it.
@@ -25,19 +24,18 @@ class SetPy(object):
         """
         Check if contains item.
 
-        :type item: Any
-        :param item: Item to be checked for presence in self.
-        :rtype: bool
-        :return: True if item in self, False otherwise.
+        Args:
+            item: Item to be checked for presence in self.
+
+        Returns:
+            bool: True if item in self, False otherwise.
         """
 
     @abc.abstractmethod
     def cardinality(self):
         """
-        Return number of items in set.
-
-        :rtype: number (int if finite, Infinity otherwise)
-        :return: Number of elements in set.
+        Returns:
+            number: Number of elements in set. int if finite, Infinity otherwise.
         """
 
     @abc.abstractmethod
@@ -45,9 +43,11 @@ class SetPy(object):
         """
         If finite, return all elements. If not, raise an exception.
 
-        :rtype: list
-        :return: List of all elements in set.
-        :raise: Exception (Set is infinite, so all elements cannot be captured in a list)
+        Returns:
+            list: List of all elements in set.
+
+        Raises:
+            Exception: Set is infinite, so all elements cannot be captured in a list.
         """
 
     @abc.abstractmethod
@@ -55,18 +55,17 @@ class SetPy(object):
         """
         Check whether self is subset of other.
 
-        :type other: SetPy
-        :param other: Set being checked if self is subset of.
-        :rtype: bool
-        :return: True if all elements in self are in other, False otherwise.
+        Args:
+            other (SetPy): Set being checked if self is subset of.
+
+        Returns:
+            bool: True if all elements in self are in other, False otherwise.
         """
 
     def is_finite(self):
         """
-        Return whether has a finite number of elements.
-
-        :rtype: bool
-        :return: True if set is finite, False otherwise.
+        Returns:
+             bool: True if set is finite, False otherwise.
         """
         return not isinstance(self.cardinality(), Infinity)
 
@@ -74,10 +73,11 @@ class SetPy(object):
         """
         Check if both sets are disjoint.
 
-        :type other: SetPy
-        :param other: Set to compare with self.
-        :rtype: bool
-        :return: True if no elements in self are in other, False otherwise.
+        Args:
+            other (SetPy): Set to compare with self.
+
+        Returns:
+            bool: True if no elements in self are in other, False otherwise.
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be disjoint with another SetPy")
@@ -87,9 +87,11 @@ class SetPy(object):
         """
         Check whether sets are exactly equal.
 
-        :type other: Any
-        :rtype: bool
-        :return: True if other is SetPy and both sets are subsets of each other, False otherwise.
+        Args:
+            other (SetPy): Other set to check against.
+
+        Returns:
+            bool: True if other is SetPy and both sets are subsets of each other, False otherwise.
         """
         if not isinstance(other, SetPy):
             return False
@@ -99,10 +101,11 @@ class SetPy(object):
         """
         Check whether self is proper subset of other.
 
-        :type other: SetPy
-        :param other: Set being checked against.
-        :rtype: bool
-        :return: True if all elements in self are elements in other and not vice versa, False otherwise.
+        Args:
+            other (SetPy): Set being checked against.
+
+        Returns:
+            bool: True if all elements in self are elements in other and not vice versa, False otherwise.
         """
         if not isinstance(other, SetPy):
             raise TypeError("Can only be proper subset of another SetPy")
