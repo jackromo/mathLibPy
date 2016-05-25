@@ -1,8 +1,7 @@
 """
-.. module:: trig
-    :synopsis: Sin, Cos and Tan classes.
+Sin, Cos and Tan classes.
 
-.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+Author: Jack Romo <sharrackor@gmail.com>
 """
 
 

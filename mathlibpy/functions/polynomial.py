@@ -1,8 +1,7 @@
 """
-.. module:: polynomial
-    :synopsis: Polynomial class.
+Polynomial class.
 
-.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+Author: Jack Romo <sharrackor@gmail.com>
 """
 
 
@@ -16,8 +15,8 @@ class Polynomial(function.Function):
 
     def __init__(self, coeffs):
         """
-        :type coeffs: list
-        :param coeffs: List of all coefficients, indexed by degree. ie. coeffs[n] = nth degree coefficient.
+        Args:
+            coeffs (list): List of all coefficients, indexed by degree. ie. coeffs[n] = nth degree coefficient.
         """
         self.coeffs = coeffs
 
@@ -46,7 +45,8 @@ class Polynomial(function.Function):
 
     def __str__(self):
         """
-        :return: String of following form: '#x^0 +- #x^1 +- ... +- #x^n'
+        Returns:
+             str: String of following form: '#x^0 +- #x^1 +- ... +- #x^n'
         """
         result = ""
         for i, c in enumerate(self.coeffs):
@@ -72,9 +72,11 @@ class Polynomial(function.Function):
         """
         Gets nth coefficient of polynomial.
 
-        :type item: int
-        :param item: Degree of the term whose coefficient will be retrieved.
-        :return: Coefficient of term with degree equal to provided index.
+        Args:
+            item (int): Degree of the term whose coefficient will be retrieved.
+
+        Returns:
+            number: Coefficient of term with degree equal to provided index.
         """
         if not isinstance(item, int):
             raise TypeError("Tried to index with a non-integer")
@@ -89,11 +91,9 @@ class Polynomial(function.Function):
         """
         Resets nth coefficient of polynomial to prescribed value.
 
-        :type key: int
-        :param key: Degree of the term whose coefficient will be altered.
-        :type value: number
-        :param value: New coefficient value.
-        :return: Nothing.
+        Args:
+            key (int): Degree of the term whose coefficient will be altered.
+            value (number): New coefficient value.
         """
         if not isinstance(key, int):
             raise TypeError("Tried to index with a non-integer")

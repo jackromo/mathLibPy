@@ -1,8 +1,7 @@
 """
-.. module:: exp
-    :synopsis: All exponential, power and logarithmic functions.
+All exponential, power and logarithmic functions.
 
-.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+Author: Jack Romo <sharrackor@gmail.com>
 """
 
 

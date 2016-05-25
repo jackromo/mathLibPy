@@ -1,8 +1,7 @@
 """
-.. module:: sequence
-    :synopsis: Sequence, FunctionSequence, ArithmeticSequence and GeometricSequence classes.
+Sequence, FunctionSequence, ArithmeticSequence and GeometricSequence classes.
 
-.. moduleauthor:: Jack Romo <sharrackor@gmail.com>
+Author: Jack Romo <sharrackor@gmail.com>
 """
 
 
@@ -21,9 +20,11 @@ class Sequence(object):
         """
         Return nth item of sequence.
 
-        :type n: int
-        :param n: Index of sequence term to retrieve.
-        :return: Nth element of sequence.
+        Args:
+            n (int): Index of sequence term to retrieve.
+
+        Returns:
+            Nth element of sequence.
         """
         if not isinstance(n, int):
             raise TypeError("Can only be called on integers")
@@ -38,9 +39,11 @@ class Sequence(object):
         Given a value n, returns the nth item in the sequence.
         n is guaranteed to be an integer > 0.
 
-        :type n: int
-        :param n: Index of desired sequence element.
-        :return: Value of nth term.
+        Args:
+            n (int): Index of desired sequence element.
+
+        Returns:
+            Value of nth term.
         """
 
     @abc.abstractmethod
@@ -53,11 +56,12 @@ class Sequence(object):
         """
         Returns sum between a range of integers of all terms with indices in that range.
 
-        :type i: int
-        :param i: Lowest index to start summing from, inclusive.
-        :type n: int
-        :param n: Highest index to sum to, inclusive.
-        :return: Sum of terms indexed from i to n inclusive.
+        Args:
+            i (int): Lowest index to start summing from, inclusive.
+            n (int): Highest index to sum to, inclusive.
+
+        Returns:
+            Sum of terms indexed from i to n inclusive.
         """
         return sum(self(j) for j in range(i, n+1))
 
@@ -69,8 +73,8 @@ class FunctionSequence(Sequence):
 
     def __init__(self, f):
         """
-        :type f: function.Function
-        :param f: Function that generates each term, given the index as input.
+        Args:
+            f (Function): Function that generates each term, given the index as input.
         """
         if not isinstance(f, function.Function):
             raise TypeError("Must supply Function to FunctionSequence")
@@ -92,10 +96,9 @@ class ArithmeticSequence(Sequence):
 
     def __init__(self, initial, c):
         """
-        :type c: number
-        :param c: constant added onto each term.
-        :type initial: number
-        :param initial: 0th term's value.
+        Args:
+            c (number): constant added onto each term.
+            initial (number): 0th term's value.
         """
         self.initial = initial
         self.const = c
@@ -116,10 +119,9 @@ class GeometricSequence(Sequence):
 
     def __init__(self, initial, r):
         """
-        :type r: number
-        :param r: constant multiplied by each term.
-        :type initial: number
-        :param initial: 0th term's value.
+        Args:
+            r (number): constant multiplied by each term.
+            initial (number): 0th term's value.
         """
         self.initial = initial
         self.const = r
