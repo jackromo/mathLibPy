@@ -2,7 +2,6 @@
 
 ## General
 
-* Improve Sphinx documentation
 * Finish SetPy and subclasses
     * Finish SetPyCombinationFactory subclasses
     * Create tests for SetPy and subclasses

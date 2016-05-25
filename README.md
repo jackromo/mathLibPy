@@ -10,17 +10,7 @@ MathLibPy is licensed under the [MIT License (MIT)](LICENSE).
 
 ## Requirements
 
-This library uses Python 2.7x, along with Sphinx and reStructuredText for documentation.
-
-## Documentation
-
-The documentation can be built into HTML. To do this, enter the 'docs' folder and type
-
-```bash
-make html
-```
-
-in the command prompt. After this, open up 'index.html' in 'docs/_build' in your browser.
+This library uses Python 2.7x.
 
 ## Installation
 
