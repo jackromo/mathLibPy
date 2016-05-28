@@ -172,8 +172,16 @@ class SetIntersect(SetPyCombinationFactory):
 
     @classmethod
     def _combine_interval_interval(cls, set1, set2):
-        # TODO
-        pass
+        if set1.range_type.is_subset(set2.range_type):
+            min_val = set1.lowest if set2.lowest not in set1 else max(set1.lowest, set2.lowest)
+            max_val = set1.highest if set2.highest not in set1 else min(set1.highest, set2.highest)
+            return sets.IntervalSetPy(set1.range_type, min_val, max_val)
+        elif set2.range_type.is_subset(set1.range_type):
+            min_val = set2.lowest if set1.lowest not in set2 else max(set2.lowest, set1.lowest)
+            max_val = set2.highest if set1.highest not in set2 else min(set2.highest, set1.highest)
+            return sets.IntervalSetPy(set2.range_type, min_val, max_val)
+        else:
+            return sets.FiniteSetPy([])
 
     @classmethod
     def _combine_interval_uniqueunion(cls, set1, set2):
@@ -219,8 +227,19 @@ class SetDifference(SetPyCombinationFactory):
 
     @classmethod
     def _combine_interval_finiteset(cls, set1, set2):
-        # TODO
-        pass
+        final_sets = []
+        intersecting_elems = SetIntersect(set1, set2).elems()
+        if len(intersecting_elems) == 0:
+            return set1
+        # All intersecting elements are in an interval set, implies is orderable
+        next_lowest = set1.lowest
+        for next_highest in [set1.lowest] + sorted(intersecting_elems) + [set1.highest]:
+            final_sets.append(sets.IntervalSetPy(set1.range_type, next_lowest, next_highest))
+        return reduce(
+            lambda accum, new: SetUnion(accum, new),
+            final_sets,
+            sets.FiniteSetPy([])
+        )
 
     @classmethod
     def _combine_interval_interval(cls, set1, set2):
