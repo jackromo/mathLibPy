@@ -1,5 +1,6 @@
 import sets
 import abc
+import universes
 
 
 class SetPyCombinationFactory(object):
@@ -243,8 +244,41 @@ class SetDifference(SetPyCombinationFactory):
 
     @classmethod
     def _combine_interval_interval(cls, set1, set2):
-        # TODO
-        pass
+        difference_range_type = universes.UniverseDifference(set1.range_type, set2.range_type)
+        normal_intervals = []
+        difference_interval = None
+        if set2.lowest > set1.highest or set2.highest < set1.lowest:
+            return set1
+        # now guaranteed to be some intersection between set1 and set2
+        if set2.lowest <= set1.lowest and set2.highest <= set1.highest:
+            normal_intervals.append(sets.IntervalSetPy(set1.range_type, set2.highest, set1.highest))
+            difference_interval = sets.IntervalSetPy(difference_range_type, set1.lowest, set2.highest)
+        elif set2.lowest <= set1.lowest and set2.highest > set1.highest:
+            difference_interval = sets.IntervalSetPy(difference_range_type, set1.lowest, set1.highest)
+        elif set2.lowest > set1.lowest and set2.highest <= set1.highest:
+            normal_intervals.append(sets.IntervalSetPy(set1.range_type, set1.highest, set2.lowest))
+            difference_interval = sets.IntervalSetPy(difference_range_type, set2.lowest, set2.highest)
+            normal_intervals.append(sets.IntervalSetPy(set1.range_type, set2.highest, set1.highest))
+        elif set2.lowest > set1.lowest and set2.highest > set1.highest:
+            difference_interval = sets.IntervalSetPy(difference_range_type, set1.lowest, set2.lowest)
+            normal_intervals.append(sets.IntervalSetPy(set1.range_type, set2.lowest, set1.highest))
+        # make sure one is subset of another
+        if set1.range_type.is_subset(set2.range_type):
+            # discard difference interval, set2 removes everything in it
+            return reduce(
+                lambda accum, new: SetUnion(accum, new),
+                normal_intervals,
+                sets.FiniteSetPy([])
+            )
+        elif set2.range_type.is_subset(set1.range_type):
+            # set2 is proper subset of set1, keep difference interval
+            return reduce(
+                lambda accum, new: SetUnion(accum, new),
+                normal_intervals + [difference_interval],
+                sets.FiniteSetPy([])
+            )
+        else:
+            return set1
 
     @classmethod
     def _combine_interval_uniqueunion(cls, set1, set2):
