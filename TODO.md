@@ -3,7 +3,6 @@
 ## General
 
 * Finish SetPy and subclasses
-    * Finish SetPyCombinationFactory subclasses
     * Create tests for SetPy and subclasses
 
 ## Future features
